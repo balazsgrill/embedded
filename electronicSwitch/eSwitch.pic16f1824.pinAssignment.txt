@@ -1,0 +1,16 @@
+PIN allocation:
+
+RA0, RA1, RA3: ICSP
+RC0, RC1, RC2: SPI interface
+RC5: PWM1, CCP1
+RC3: PWM2, CCP2
+
+RA2, RA4: Relay 1
+RA5, RC4: Relay 2
+
+Resources:
+
+	Timer0: relay drive off
+	
+	Timer4: PWM1
+	Timer6: PWM2
