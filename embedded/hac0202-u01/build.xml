@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hac0202-u01">
+	
+	<eclipse.convertPath resourcepath="microchip.pic16" property="pic16Project"/>
+	<include file="${pic16Project}/compile.xml" />
+	
+	<target name="loopback">
+		<modembed.pic16.compile name="loopback" target="pic16f1824" output="out" config="hac0202-u01.pic16f1824.config.xmi">
+			<union>
+				<fileset dir="lib">
+    				<include name="**/*.m"/>
+				</fileset>
+				<filelist dir="${basedir}">
+					<file name="loopback.main.m"/>
+				</filelist>
+			</union>
+		</modembed.pic16.compile>
+	</target>
+	
+</project>
