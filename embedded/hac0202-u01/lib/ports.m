@@ -13,6 +13,9 @@ use PIC16F1824.interface;
  * RC2, RC3 : Relay 2
  */
 void ports_init(){
+	INTCON = 0;
+	OSCCON = 0b01101011;
+
 	/* First make everything an input to avoid transients */
 	TRISA = 0xFF;
 	TRISC = 0xFF;
