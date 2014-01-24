@@ -26,4 +26,22 @@ void ports_init(){
 	
 	APFCON0 = 0b00000000;
 	APFCON1 = 0b00000000;
+	TRISC[3] = 0;
+	LATC[3] = 1;
+}
+
+void dbg_set(){
+	LATC[3] = 1;
+}
+
+void dbg_clr(){
+	LATC[3] = 0;
+}
+
+void toggle(){
+	if (LATC[3]){
+		LATC[3] = 0;
+	}else{
+		LATC[3] = 1;
+	}
 }

@@ -27,14 +27,17 @@ void uart_init(){
 	 * 9600 bps assuming 4MHz clock
 	 */
 	TXSTA[BRGH] = 1; //BRGH
-	SPBRGL = 25;
+	BAUDCON[3] = 1;
+	SPBRGL = 103;
 	SPBRGH = 0;
 	
 	/* Enable EUSART */
-	TXSTA[TXEN] = 1;
+	
 	RCSTA[CREN] = 1;
 	TXSTA[SYNC] = 0;
 	RCSTA[SPEN] = 1;
+	
+	TXSTA[TXEN] = 1;
 }
 
 boolean uart_canSend(){
@@ -50,5 +53,6 @@ boolean uart_canReceive(){
 }
 
 uint8 uart_receive(){
+	PIR1[RCIF] = 0;
 	return RCREG;
 }
