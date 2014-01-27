@@ -24,11 +24,11 @@ void uart_init(){
  
 	/*
 	 * Configure BRG
-	 * 9600 bps assuming 4MHz clock
+	 * 9600 bps assuming 2MHz clock
 	 */
 	TXSTA[BRGH] = 1; //BRGH
-	BAUDCON[3] = 1;
-	SPBRGL = 103;
+	BAUDCON[3] = 0; //BRG16
+	SPBRGL = 10;
 	SPBRGH = 0;
 	
 	/* Enable EUSART */

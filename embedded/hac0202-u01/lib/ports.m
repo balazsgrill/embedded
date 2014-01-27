@@ -14,7 +14,8 @@ use PIC16F1824.interface;
  */
 void ports_init(){
 	INTCON = 0;
-	OSCCON = 0b01101011;
+	OSCCON = 0b01100011;
+	//OSCCON = 0b00000011;
 
 	/* First make everything an input to avoid transients */
 	TRISA = 0xFF;
@@ -26,22 +27,15 @@ void ports_init(){
 	
 	APFCON0 = 0b00000000;
 	APFCON1 = 0b00000000;
+	TRISC[2] = 0;
 	TRISC[3] = 0;
-	LATC[3] = 1;
+	//LATC[2] = 1;
 }
 
 void dbg_set(){
-	LATC[3] = 1;
+	LATC[2] = 1;
 }
 
 void dbg_clr(){
-	LATC[3] = 0;
-}
-
-void toggle(){
-	if (LATC[3]){
-		LATC[3] = 0;
-	}else{
-		LATC[3] = 1;
-	}
+	LATC[2] = 0;
 }
