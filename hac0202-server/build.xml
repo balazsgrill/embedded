@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2014.02.06. 13:15:01                                                        
+                   
+     balazs.grill                                                                
+     ====================================================================== -->
+<project name="project" default="dist">
+	
+    <target name="dist">
+    	<property name="mcp2200.jni.dir" value="../../mcp2200-jni"/>
+    	<mkdir dir="WEB-INF/lib"/>
+    	<copy file="${mcp2200.jni.dir}/mcp2200-jni.jar" todir="WEB-INF/lib" />
+        <mkdir dir="WEB-INF/classes"/>
+    	<javac srcdir="src"
+    		  destdir="WEB-INF/classes">
+    		<classpath path="WEB-INF/lib/mcp2200-jni.jar" />
+    		<classpath path="servlet-api-3.1.jar" />
+    	</javac>
+    	<jar destfile="hac0202.war" basedir="." includes="WEB-INF/**">
+    		<manifest>
+				<attribute name="Implementation-Title" value="HAC0202 controller webapp"/>
+				<attribute name="Implementation-Version" value="0.1"/>
+    		</manifest>
+    	</jar>
+    </target>
+
+</project>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <display-name>HAC0202 controller</display-name>
+
+  <!-- Declare the existence of a servlet. -->
+  <servlet>
+    <servlet-name>control</servlet-name>
+    <servlet-class>hu.hac.hac0202.server.HAC0202ControlServlet</servlet-class>
+  </servlet>
+
+  <!-- Map URLs to that servlet. -->
+  <servlet-mapping>
+    <servlet-name>control</servlet-name>
+    <url-pattern>/control</url-pattern>
+  </servlet-mapping>
+</web-app>
