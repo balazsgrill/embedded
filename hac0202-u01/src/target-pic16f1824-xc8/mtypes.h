@@ -17,9 +17,13 @@ extern "C" {
     typedef unsigned short uint16;
 
     typedef int boolean;
-#define true 1
-#define false 0;
 
+#define true 1
+#define false 0
+
+#define bool boolean
+#define TRUE true
+#define FALSE false
 
 #ifdef	__cplusplus
 }

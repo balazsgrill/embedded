@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-
+#include "mtypes.h"
     void main_process_message(uint8 id, uint8 data);
 #define COM_MESSAGE_RECEIVE(id, data) main_process_message(id, data)
 

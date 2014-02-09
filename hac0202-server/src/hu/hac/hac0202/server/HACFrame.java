@@ -66,6 +66,11 @@ public class HACFrame {
 	}
 	
 	@Override
+	public String toString() {
+		return "FRAME["+id+"] = "+data;
+	}
+	
+	@Override
 	public int hashCode() {
 		return id*256+data;
 	}
@@ -77,6 +82,14 @@ public class HACFrame {
 			return (id == other.id) && (data == other.data);
 		}
 		return super.equals(arg0);
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public int getData() {
+		return data;
 	}
 	
 }

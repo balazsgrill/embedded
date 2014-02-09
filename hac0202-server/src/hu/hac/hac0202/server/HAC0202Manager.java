@@ -6,6 +6,7 @@ import java.util.List;
 
 import hu.mcp2200.IMCP2200Connection;
 import hu.mcp2200.IMCP2200Device;
+import hu.mcp2200.MCP2200Configuration;
 import hu.mcp2200.MCP2200Exception;
 import hu.mcp2200.MCP2200JNI;
 import hu.mcp2200.MCP2200Manager;
@@ -22,6 +23,9 @@ public class HAC0202Manager {
 				device = devices.iterator().next();
 				try {
 					connection = device.connect();
+					MCP2200Configuration config = new MCP2200Configuration();
+					config.desiredBaudRate = 9600;
+					connection.configure(config);
 				} catch (MCP2200Exception e) {
 					device = null;
 					throw e;
@@ -50,6 +54,7 @@ public class HAC0202Manager {
 	private byte[] leftovers = new byte[0];
 	
 	public HACFrame[] read() throws MCP2200Exception, Exception{
+		int dropped = 0;
 		List<HACFrame> result = new ArrayList<>(32);
 		byte[] data = new byte[64];
 		int r = getConnection().receive(data);
@@ -64,6 +69,15 @@ public class HAC0202Manager {
 			r = newdata.length;
 		}
 		
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<r;i++){
+			int d = HACFrame.byteToInt(data[i]);
+			String s = Integer.toHexString(d);
+			if (s.length() == 1) sb.append("0");
+			sb.append(s);sb.append(" ");
+		}
+		System.out.println(sb.toString());
+		
 		while(r-index >= 2){
 			HACFrame frame = HACFrame.parseFrame(data, index);
 			if (frame != null){
@@ -71,6 +85,7 @@ public class HAC0202Manager {
 				index += 2;
 			}else{
 				/* Drop byte */
+				dropped++;
 				index++;
 			}
 		}
@@ -78,6 +93,7 @@ public class HAC0202Manager {
 		leftovers = new byte[r-index];
 		System.arraycopy(data, index, leftovers, 0, leftovers.length);
 		
+		System.out.println("Dropped "+dropped);
 		return result.toArray(new HACFrame[result.size()]);
 	}
 

@@ -25,10 +25,10 @@ void actuator_init(){
     APFCON0 = 0b00000000;
     APFCON1 = 0b00000000;
 
-    TRISAbits.TRISA4 = 1;
-    TRISAbits.TRISA5 = 1;
-    TRISCbits.TRISC2 = 1;
-    TRISCbits.TRISC3 = 1;
+    TRISAbits.TRISA4 = 0;
+    TRISAbits.TRISA5 = 0;
+    TRISCbits.TRISC2 = 0;
+    TRISCbits.TRISC3 = 0;
 }
 void actuator_relay1_on(){
     LATAbits.LATA4 = 1;

@@ -1,5 +1,5 @@
-#import <application.h>
-#import "runtime.h"
+#include <application.h>
+#include "runtime.h"
 #include "mtypes.h"
 #include "uart.h"
 #include "com.h"
@@ -17,6 +17,8 @@
 #define RXMSG_PWM1 1u
 #define RXMSG_PWM2 2u
 #define TXMSG_ERRORS 0u
+#define TXMSG_ACK 1u
+#define TXMSG_UNKNOWN_MESSAGE 2u
 
 #define RELAY1_ON 1u
 #define RELAY1_OFF 2u
@@ -41,8 +43,10 @@ void application_init(){
 }
 
 void main_process_message(uint8 id, uint8 data){
+bool ok = FALSE;
     switch(id){
         case RXMSG_RELAYCMD:
+			ok = TRUE;
             if ((data & RELAY1_ON) != 0){
                 actuator_relay1_on();
             }
@@ -58,19 +62,28 @@ void main_process_message(uint8 id, uint8 data){
             sch_start(TIMER_RELAY_OFF, RELAY_ON_PERIOD);
         break;
         case RXMSG_PWM1:
+			ok = TRUE;
             actuator_pwm1(data);
         break;
         case RXMSG_PWM2:
+			ok = TRUE;
             actuator_pwm2(data);
         break;
     }
+	if (ok){
+		com_sendMsg(TXMSG_ACK, id);
+	}else{
+		com_sendMsg(TXMSG_UNKNOWN_MESSAGE, id);
+	}
 }
 
 void main_timer_trigger(uint8 id){
     switch(id){
         case TIMER_STATUS:
-            com_sendMsg(TXMSG_ERRORS, com_errorCount);
-            com_errorCount = 0u;
+			if (com_errorCount > 0u){
+	    		com_sendMsg(TXMSG_ERRORS, com_errorCount);
+        	    com_errorCount = 0u;
+			}
             sch_start(TIMER_STATUS, STATUS_PERIOD);
         break;
         case TIMER_RELAY_OFF:

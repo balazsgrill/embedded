@@ -20,11 +20,20 @@ static uint8 data = 0;
 */
 static uint8 state = 0;
 
-void com_sendMsg(uint8 id, uint8 data){
-    uint8 check = 0xFu;
+static uint8 calcCheck(uint8 id, uint8 data){
+	uint8 check = 0xFu;
     check -= (id + (data & 0xFu) + ((data & 0xF0u)>>4u));
     check = check & 0xFu;
+	return check;
+}
+
+void com_sendMsg(uint8 id, uint8 data){
+    uint8 check = calcCheck(id, data);
     uint8 h = (check << 4u) + (id & 0xFu);
+	
+	txBuffer[txend] = 0x55;
+	txend = (txend+1)%TX_BUFFERSIZE;
+
     txBuffer[txend] = h;
     txend = (txend+1)%TX_BUFFERSIZE;
     txBuffer[txend] = data;
@@ -58,10 +67,9 @@ void com_process(){
 	if (state == 2){
 		uint8 id = head & 0x0Fu;
 		uint8 check = (head & 0xF0u) >> 4u;
+		uint8 checkCalc = calcCheck(id, data);
 
-		check = check + id + (data & 0xfu) + ((data) & 0xf0u >> 4u);
-
-		if ((check & 0xF) == 0xF){
+		if (check == checkCalc){
 			/* Message is correct, process it */
 			state = 0;
                         COM_MESSAGE_RECEIVE(id, data);
