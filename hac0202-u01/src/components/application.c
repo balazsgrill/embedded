@@ -1,11 +1,11 @@
-#include <application.h>
-#include "runtime.h"
-#include "mtypes.h"
-#include "uart.h"
-#include "com.h"
-#include "runtime.h"
-#include "scheduler.h"
-#include "actuator.h"
+#include "application.h"
+#include <runtime.h>
+#include <mtypes.h>
+#include <uart.h>
+#include <com.h>
+#include <runtime.h>
+#include <scheduler.h>
+#include <actuator.h>
 
 #define TIMER_STATUS 0u
 #define STATUS_PERIOD 30u
@@ -42,7 +42,7 @@ void application_init(){
 	sch_start(TIMER_STATUS, STATUS_PERIOD);
 }
 
-void main_process_message(uint8 id, uint8 data){
+void callback_com_process_message(uint8 id, uint8 data){
 bool ok = FALSE;
     switch(id){
         case RXMSG_RELAYCMD:
@@ -77,7 +77,7 @@ bool ok = FALSE;
 	}
 }
 
-void main_timer_trigger(uint8 id){
+void callback_sch_timer_trigger(uint8 id){
     switch(id){
         case TIMER_STATUS:
 			if (com_errorCount > 0u){

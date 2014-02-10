@@ -29,6 +29,25 @@ void actuator_init(){
     TRISAbits.TRISA5 = 0;
     TRISCbits.TRISC2 = 0;
     TRISCbits.TRISC3 = 0;
+
+    /* CCP3/4 on timer 4 */
+    CCPTMRS0 = 0b01010000;
+
+    /* Set up CCP3 (Timer2) */
+    CCP3CON = 0b00001111;
+    actuator_pwm1(0u);
+
+    /* Set up CCP4 (Timer4) */
+    CCP4CON = 0b00001111;
+    actuator_pwm2(0u);
+
+    /* Set up Timer4 (disabled pre-/postscaler)*/
+    PR4 = 0xFFu;
+    T4CON = 0b00000100;
+
+    /* Enabled PWM output */
+    TRISAbits.TRISA2 = 0;
+    TRISCbits.TRISC1 = 0;
 }
 void actuator_relay1_on(){
     LATAbits.LATA4 = 1;
@@ -50,8 +69,11 @@ void actuator_relay_drive_off(){
 }
 
 void actuator_pwm1(uint8 value){
+	CCPR3L = value;
+	CCP3CONbits.DC3B = value & 0x3;
 
 }
 void actuator_pwm2(uint8 value){
-    
+    CCPR4L = value;
+    CCP4CONbits.DC4B = value & 0x3;
 }

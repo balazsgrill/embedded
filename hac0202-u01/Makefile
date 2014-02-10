@@ -7,7 +7,7 @@ OUT_DIR = out
 
 RELEASE_EXT = hex
 
-SOURCE_DIRS = src/components/ src/drivers-pic16f1824/ src/target-pic16f1824-xc8/
+SOURCE_DIRS = src/components src/drivers-pic16f1824 src/target-pic16f1824-xc8
 
 include make/sources.mk
 
