@@ -1,13 +1,13 @@
 /**
  * 
  */
-package hu.hac.hac0202.server;
+package hu.hac.hac0202.server.impl;
 
 /**
  * @author balazs.grill
  *
  */
-public class HACFrame {
+public class HAC0202Frame {
 
 	private final int id;
 	private final int data;
@@ -38,7 +38,7 @@ public class HACFrame {
 	/**
 	 * 
 	 */
-	public HACFrame(int id, int data) {
+	public HAC0202Frame(int id, int data) {
 		if (id < 0 || id > 15) throw new IllegalArgumentException("Frame ID must be between 0 and 15");
 		if (data < 0 || data > 255) throw new IllegalArgumentException("Frame data must be between 0 and 255");
 		this.id = id;
@@ -51,13 +51,13 @@ public class HACFrame {
 		return new byte[]{ intToByte(head), intToByte(data) };
 	}
 	
-	public static HACFrame parseFrame(byte[] data, int index){
+	public static HAC0202Frame parseFrame(byte[] data, int index){
 		int head = byteToInt(data[index]);
 		int payload = byteToInt(data[index+1]);
 		
 		int id = head & 0xf;
 		int check = (head >> 4) & 0xf;
-		HACFrame frame = new HACFrame(id, payload);
+		HAC0202Frame frame = new HAC0202Frame(id, payload);
 		if (check == frame.getCheckCode()){
 			return frame;
 		}else{
@@ -77,8 +77,8 @@ public class HACFrame {
 	
 	@Override
 	public boolean equals(Object arg0) {
-		if (arg0 instanceof HACFrame){
-			HACFrame other = (HACFrame)arg0;
+		if (arg0 instanceof HAC0202Frame){
+			HAC0202Frame other = (HAC0202Frame)arg0;
 			return (id == other.id) && (data == other.data);
 		}
 		return super.equals(arg0);

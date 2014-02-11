@@ -3,6 +3,7 @@
  */
 package hu.hac.hac0202.server;
 
+import hu.hac.IDeviceControl;
 import hu.hac.hac0202.server.impl.SingletonHAC0202Service;
 
 import java.io.IOException;
@@ -112,16 +113,8 @@ public class HAC0202ControlServlet extends HttpServlet {
 		}else{
 			Integer v = Integer.parseInt(value);
 
-			if ("R1".equals(dev)){
-				boolean on = v != 0;
-				SingletonHAC0202Service.getInstance().relay1(on);	
-			}else
-				if ("R2".equals(dev)){
-					boolean on = v != 0;
-					SingletonHAC0202Service.getInstance().relay2(on);
-				}else{
-					throw new ServletException("Unknown device!");
-				}
+			IDeviceControl control = SingletonHAC0202Service.getInstance().getControl(dev);
+			control.requestValue(v.intValue());
 		}
 		
 		

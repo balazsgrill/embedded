@@ -3,9 +3,10 @@
  */
 package hu.hac.hac0202.server.impl;
 
+import hu.hac.IControlService;
 import hu.hac.hac0202.server.HAC0202Manager;
-import hu.hac.hac0202.server.HACFrame;
-import hu.hac.hac0202.server.IHAC0202Service;
+import hu.hac.hac0202.server.IHAC0202ControlService;
+import hu.hac.impl.AbstractControlServiceThread;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -14,11 +15,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author balage
  *
  */
-public class SingletonHAC0202Service extends Thread implements IHAC0202Service{
+public class SingletonHAC0202Service extends AbstractControlServiceThread implements IHAC0202ControlService{
 
-	private static IHAC0202Service instance = null;
+	private static IControlService instance = null;
 	
-	public static IHAC0202Service getInstance() {
+	public static IControlService getInstance() {
 		if (instance == null){
 			instance = new SingletonHAC0202Service();
 		}
@@ -33,107 +34,99 @@ public class SingletonHAC0202Service extends Thread implements IHAC0202Service{
 	private static int CMDID_PWM2 = 2;
 	
 	private static int MSGID_ACK = 1;
+	private static int MSGID_UNKNOWN_MSG = 2;
 	
 	private static int RELAY1_ON = 1;
 	private static int RELAY1_OFF = 2;
 	private static int RELAY2_ON = 4;
 	private static int RELAY2_OFF = 8;
 	
-	private final HAC0202Manager manager;
+	private HAC0202Manager manager;
 	
-	private final BlockingQueue<HACFrame> frames = new LinkedBlockingQueue<>();
+	private final BlockingQueue<HAC0202Frame> frames = new LinkedBlockingQueue<>();
 	
-	private HACFrame current = null;
+	private HAC0202Frame current = null;
 	private long sentTime;
 	private int tries;
 	
-	private SingletonHAC0202Service() {
-		setDaemon(true);
+	@Override
+	protected void initialize() {
+		super.initialize();
 		manager = new HAC0202Manager();
-		start();
+		
+		RelayDeviceControl R1 = new RelayDeviceControl(this, CMDID_RELAY, RELAY1_ON, RELAY1_OFF);
+		register("R1", R1);
+		register("R2", new RelayDeviceControl(this, CMDID_RELAY, RELAY2_ON, RELAY2_OFF));
+		PWMDeviceControl P1 = new PWMDeviceControl(this, CMDID_PWM1);
+		register("P1", P1);
+		register("P2", new PWMDeviceControl(this, CMDID_PWM2));
+		
+		register("L", new CompositeLamp(R1, P1));
 	}
 	
 	@Override
-	public void run() {
-		while(true){
-			try {
-				sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	protected void step() {
+		try {
+			for(HAC0202Frame f: manager.read()){
+				if (f.getId() == MSGID_UNKNOWN_MSG){
+					if (current != null && current.getId() == f.getData()){
+						// sent message ID is unknown by target, give up sending
+						// TODO log error
+						current = null;
+					}
+				}
+				if (f.getId() == MSGID_ACK){
+					if (current != null && current.getId() == f.getData()){
+						// ACK received, finished sending
+						current = null;
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (current != null){
+			/* Still waiting for ACK */
+			
+			if (System.currentTimeMillis()-sentTime > CONF_TIMEOUT){
+				/* retry */
+				if(tries < CONF_RETRY){
+					tries++;
+					try {
+						manager.send(current);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					sentTime = System.currentTimeMillis();
+				}else{
+					/* Give up */
+					current = null;
+				}
 			}
 			
+		}else{
+			/* No pending communication */
 			try {
-				for(HACFrame f: manager.read()){
-					if (f.getId() == MSGID_ACK){
-						if (current != null && current.getId() == f.getData()){
-							// ACK received, finished sending
-							current = null;
-						}
-					}
+				HAC0202Frame current = frames.poll();
+				if (current != null){
+					manager.send(current);
+					sentTime = System.currentTimeMillis();
+					tries = 1;
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			if (current != null){
-				/* Still waiting for ACK */
-				
-				if (System.currentTimeMillis()-sentTime > CONF_TIMEOUT){
-					/* retry */
-					if(tries < CONF_RETRY){
-						tries++;
-						try {
-							manager.send(current);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						sentTime = System.currentTimeMillis();
-					}else{
-						/* Give up */
-						current = null;
-					}
-				}
-				
-			}else{
-				/* No pending communication */
-				try {
-					HACFrame current = frames.poll();
-					if (current != null){
-						manager.send(current);
-						sentTime = System.currentTimeMillis();
-						tries = 1;
-					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
+		super.step();
 	}
 
 	@Override
-	public void relay1(boolean on) {
-		frames.add(new HACFrame(CMDID_RELAY, on ? RELAY1_ON : RELAY1_OFF));
-	}
-
-	@Override
-	public void relay2(boolean on) {
-		frames.add(new HACFrame(CMDID_RELAY, on ? RELAY2_ON : RELAY2_OFF));
-	}
-
-	@Override
-	public void pwm1(float value, float rampSpeed) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pwm2(float value, float rampSpeed) {
-		// TODO Auto-generated method stub
-		
+	public void sendCommandSafely(int id, int data) {
+		frames.add(new HAC0202Frame(id, data));
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import hu.hac.hac0202.server.impl.HAC0202Frame;
 import hu.mcp2200.IMCP2200Connection;
 import hu.mcp2200.IMCP2200Device;
 import hu.mcp2200.MCP2200Configuration;
@@ -47,18 +48,18 @@ public class HAC0202Manager {
 		MCP2200JNI.getInstance().init();	
 	}
 	
-	public void send(HACFrame frame) throws MCP2200Exception, Exception{
+	public void send(HAC0202Frame frame) throws MCP2200Exception, Exception{
 		getConnection().send(frame.toRawByte());
 	}
 	
 	private byte[] leftovers = new byte[0];
 	
-	public HACFrame[] read() throws MCP2200Exception, Exception{
+	public HAC0202Frame[] read() throws MCP2200Exception, Exception{
 		int dropped = 0;
-		List<HACFrame> result = new ArrayList<>(32);
+		List<HAC0202Frame> result = new ArrayList<>(32);
 		byte[] data = new byte[64];
 		int r = getConnection().receive(data);
-		if (r == 0) return new HACFrame[0];
+		if (r == 0) return new HAC0202Frame[0];
 		int index = 0;
 		
 		if (leftovers.length > 0){
@@ -71,7 +72,7 @@ public class HAC0202Manager {
 		
 		StringBuilder sb = new StringBuilder();
 		for(int i=0;i<r;i++){
-			int d = HACFrame.byteToInt(data[i]);
+			int d = HAC0202Frame.byteToInt(data[i]);
 			String s = Integer.toHexString(d);
 			if (s.length() == 1) sb.append("0");
 			sb.append(s);sb.append(" ");
@@ -79,7 +80,7 @@ public class HAC0202Manager {
 		System.out.println(sb.toString());
 		
 		while(r-index >= 2){
-			HACFrame frame = HACFrame.parseFrame(data, index);
+			HAC0202Frame frame = HAC0202Frame.parseFrame(data, index);
 			if (frame != null){
 				result.add(frame);
 				index += 2;
@@ -94,7 +95,7 @@ public class HAC0202Manager {
 		System.arraycopy(data, index, leftovers, 0, leftovers.length);
 		
 		System.out.println("Dropped "+dropped);
-		return result.toArray(new HACFrame[result.size()]);
+		return result.toArray(new HAC0202Frame[result.size()]);
 	}
 
 	public void dispose(){
