@@ -17,6 +17,8 @@ import java.util.Map;
 public abstract class AbstractControlServiceThread extends Thread implements IControlService{
 
 	public AbstractControlServiceThread() {
+		initialize();
+		
 		setDaemon(true);
 		start();
 	}
@@ -44,7 +46,6 @@ public abstract class AbstractControlServiceThread extends Thread implements ICo
 	
 	@Override
 	public void run() {
-		initialize();
 		
 		while(true){
 			try {

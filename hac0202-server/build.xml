@@ -11,7 +11,7 @@
     	<mkdir dir="WEB-INF/lib"/>
     	<copy file="${mcp2200.jni.dir}/mcp2200-jni.jar" todir="WEB-INF/lib" />
         <mkdir dir="WEB-INF/classes"/>
-    	<javac srcdir="src"
+    	<javac srcdir="src" debug="true"
     		  destdir="WEB-INF/classes">
     		<classpath path="WEB-INF/lib/mcp2200-jni.jar" />
     		<classpath path="servlet-api.jar" />

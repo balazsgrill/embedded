@@ -53,7 +53,7 @@ public class CompositeLamp implements IDeviceControl {
 			return;
 		}
 		
-		if (lastValue == 0 && relayState){
+		if (lastValue == 0 && requestedValue == 0 && relayState){
 			//Reached 0, switch off relay
 			relay.requestValue(0);
 			relayState = false;
@@ -67,14 +67,22 @@ public class CompositeLamp implements IDeviceControl {
 				relayState = true;
 			}
 			
-			long time = lastTime-System.currentTimeMillis();
-			float ramp = cumulation + (requestedValue>lastValue ? 1 : -1) * rampSpeed*time/1000;
+			long time = System.currentTimeMillis()-lastTime;
+			int target = requestedValue-lastValue;
+			float ramp = cumulation + (target > 0 ? 1 : -1) * rampSpeed*time/1000;
 			
-			int r = Math.round(ramp);
-			cumulation = ramp-r;
+			int r = 0;
+			if (Math.abs(ramp) > Math.abs(target)){
+				r = target;
+				cumulation = 0.0f;
+			}else{
+				r = Math.round(ramp);
+				cumulation = ramp-r;
+			}
 			
 			if (r != 0){
 				lastValue = lastValue+r;
+				
 				pwm.requestValue(lastValue);
 			}
 			
