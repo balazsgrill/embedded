@@ -7,8 +7,7 @@ import hu.hac.IDeviceControl;
 import hu.hac.hac0202.server.impl.SingletonHAC0202Service;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.util.Stack;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,100 +20,61 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HAC0202ControlServlet extends HttpServlet {
 
+	public static final String localhost = "127.0.0.1";
+	public static final String lan = "192.168.0.";
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2710130948421584380L;
 	
-	private class StructuredHTMLSerializer{
-		private final Writer out;
-		private final Stack<String> stack = new Stack<>();
-		
-		public StructuredHTMLSerializer(HttpServletResponse resp) throws IOException {
-			out = resp.getWriter();
+	public static boolean allow(String addr){
+		if (localhost.equals(addr)) return true;
+		if (addr.startsWith(lan)){
+			String last = addr.substring(lan.length());
+			int l = Integer.parseInt(last);
+			return l >=100 && l<=200;
 		}
-		
-		public void e(String element, String...args) throws IOException{
-			out.write("<");
-			out.write(element);
-			for(int i=0;i<args.length/2;i++){
-				out.write(" ");
-				out.write(args[i*2]);
-				out.write("=\"");
-				out.write(args[i*2+1]);
-				out.write("\"");
-			}
-			out.write(">");
-			stack.push(element);
-		}
-		
-		public void t(String text) throws IOException{
-			out.write(text);
-		}
-		
-		public void e() throws IOException{
-			String element = stack.pop();
-			out.write("</"+element+">");
-		}
-		
-		public void done() throws IOException{
-			while(!stack.isEmpty()){
-				
-			}
-			out.close();
-		}
+		return false;
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		/* TODO filter access by remote address */
-		//req.getRemoteAddr();
+
+		String remote = req.getRemoteAddr().trim();
 		
 		String dev = req.getParameter("dev");
 		String value = req.getParameter("value");
 		
-		if (dev == null || value == null){
+		if (dev == null){
 			
-			StructuredHTMLSerializer out = new StructuredHTMLSerializer(resp);
-			out.t("<!DOCTYPE html>");
-			out.e("html");
-				out.e("head");
-					out.e("script");
-					out.t("function control(dev, value){"
-							+ "var xmlhttp=new XMLHttpRequest();"
-							+ "xmlhttp.open(\"GET\",\""+getServletContext().getContextPath()+"?dev=\"+dev+\"&value=\"+value,true);"
-							+ "xmlhttp.send();"
-							+ "}");
-					out.e();
-				out.e();
-				out.e("body");
-				out.e("div");
-					out.e("button", "type","button", "onclick","control('R1',1)");
-					out.t("R1 ON");
-					out.e();
-					out.e("button", "type","button", "onclick","control('R1',0)");
-					out.t("R1 OFF");
-					out.e();
-				out.e();out.e("div");
-					out.e("button", "type","button", "onclick","control('R2',1)");
-					out.t("R2 ON");
-					out.e();
-					out.e("button", "type","button", "onclick","control('R2',0)");
-					out.t("R2 OFF");
-					out.e();
-				out.e();
-				out.e();
-			out.e();
-			
-			out.done();
+			PrintWriter out = resp.getWriter();
+			out.print(remote);
+			out.close();
 			
 		}else{
-			Integer v = Integer.parseInt(value);
 
-			IDeviceControl control = SingletonHAC0202Service.getInstance().getControl(dev);
-			control.requestValue(v.intValue());
+			if (allow(remote)){
+				
+				IDeviceControl control = SingletonHAC0202Service.getInstance().getControl(dev);
+				if (control == null){
+					resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Could not found device: "+dev);
+				}else{
+					if (value == null){
+						int v = control.currentValue();
+						PrintWriter out = resp.getWriter();
+						out.print(v);
+						out.flush();
+						out.close();
+					}else{
+						Integer v = Integer.parseInt(value);
+						control.requestValue(v.intValue());
+					}
+				}
+			}else{
+				resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden access");
+			}
 		}
 		
 		

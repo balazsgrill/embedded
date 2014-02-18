@@ -8,7 +8,10 @@
     <servlet-class>hu.hac.hac0202.server.HAC0202ControlServlet</servlet-class>
   </servlet>
 
-  <!-- Map URLs to that servlet. -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>control</servlet-name>
     <url-pattern>/control</url-pattern>

@@ -25,6 +25,12 @@ public class CompositeLampTests {
 		@Override
 		public void step() {
 		}
+
+		@Override
+		public int currentValue() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	}
 	
 	@Test

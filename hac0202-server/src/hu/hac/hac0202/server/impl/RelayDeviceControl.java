@@ -18,6 +18,8 @@ public class RelayDeviceControl implements IDeviceControl {
 	
 	private final IHAC0202ControlService service;
 	
+	private int lastValue = 0;
+	
 	/**
 	 * 
 	 */
@@ -34,6 +36,7 @@ public class RelayDeviceControl implements IDeviceControl {
 	@Override
 	public void requestValue(int value) {
 		service.sendCommandSafely(msgID, value > 0 ? onData : offData);
+		lastValue = value;
 	}
 
 	/* (non-Javadoc)
@@ -41,6 +44,11 @@ public class RelayDeviceControl implements IDeviceControl {
 	 */
 	@Override
 	public void step() {
+	}
+
+	@Override
+	public int currentValue() {
+		return lastValue;
 	}
 
 }

@@ -19,7 +19,7 @@ public class CompositeLamp implements IDeviceControl {
 	
 	private boolean relayState;
 	private int lastValue;
-	private int requestedValue;
+	private int requestedValue = 0;
 	private long lastTime = 0;
 	
 	private float cumulation = 0;
@@ -90,6 +90,11 @@ public class CompositeLamp implements IDeviceControl {
 
 		lastTime = System.currentTimeMillis();
 		
+	}
+
+	@Override
+	public int currentValue() {
+		return requestedValue;
 	}
 
 }

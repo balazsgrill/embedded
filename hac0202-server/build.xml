@@ -16,7 +16,9 @@
     		<classpath path="WEB-INF/lib/mcp2200-jni.jar" />
     		<classpath path="servlet-api.jar" />
     	</javac>
-    	<jar destfile="hac0202.war" basedir="." includes="WEB-INF/**">
+    	<jar destfile="hac0202.war">
+    		<fileset dir="." includes="WEB-INF/**" />
+    		<fileset dir="." includes="*.html" />
     		<manifest>
 				<attribute name="Implementation-Title" value="HAC0202 controller webapp"/>
 				<attribute name="Implementation-Version" value="0.1"/>

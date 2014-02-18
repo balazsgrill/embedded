@@ -15,6 +15,8 @@ public class PWMDeviceControl implements IDeviceControl {
 	private final IHAC0202ControlService service;
 	private final int msgID;
 	
+	private int lastValue = 0;
+	
 	/**
 	 * 
 	 */
@@ -29,6 +31,7 @@ public class PWMDeviceControl implements IDeviceControl {
 	@Override
 	public void requestValue(int value) {
 		service.sendCommandSafely(msgID, value);
+		lastValue = value;
 	}
 
 	/* (non-Javadoc)
@@ -36,6 +39,11 @@ public class PWMDeviceControl implements IDeviceControl {
 	 */
 	@Override
 	public void step() {
+	}
+
+	@Override
+	public int currentValue() {
+		return lastValue;
 	}
 
 }

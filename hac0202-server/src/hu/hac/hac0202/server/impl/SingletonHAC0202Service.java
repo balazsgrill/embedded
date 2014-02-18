@@ -49,6 +49,8 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 	private long sentTime;
 	private int tries;
 	
+	private boolean readFailure = false;
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -71,7 +73,7 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 				if (f.getId() == MSGID_UNKNOWN_MSG){
 					if (current != null && current.getId() == f.getData()){
 						// sent message ID is unknown by target, give up sending
-						// TODO log error
+						System.err.println("Message ID unknown by target: "+current.getId());
 						current = null;
 					}
 				}
@@ -82,9 +84,15 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 					}
 				}
 			}
+			if (readFailure){
+				System.err.println("Reading recovered!");
+			}
+			readFailure = false;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (!readFailure){
+				readFailure = true;
+				System.err.println("Cannot read ("+e.getMessage()+")");
+			}
 		}
 		
 		if (current != null){
@@ -97,8 +105,9 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 					try {
 						manager.send(current);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						// Error may be permanent, give up sending
+						current = null;
+						System.out.println("Could not send message ("+e.getMessage()+")");
 					}
 					sentTime = System.currentTimeMillis();
 				}else{
@@ -110,15 +119,16 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 		}else{
 			/* No pending communication */
 			try {
-				HAC0202Frame current = frames.poll();
+				current = frames.poll();
 				if (current != null){
 					manager.send(current);
 					sentTime = System.currentTimeMillis();
 					tries = 1;
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// no device, or other permanent problem
+				current = null;
+				System.err.println("Sending failed ("+e.getMessage()+")");
 			}
 		}
 		super.step();
