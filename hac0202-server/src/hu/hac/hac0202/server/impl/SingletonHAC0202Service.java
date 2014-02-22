@@ -38,8 +38,8 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 	
 	private static int RELAY1_ON = 1;
 	private static int RELAY1_OFF = 2;
-	private static int RELAY2_ON = 4;
-	private static int RELAY2_OFF = 8;
+	private static int RELAY2_ON = 8;
+	private static int RELAY2_OFF = 4;
 	
 	private HAC0202Manager manager;
 	
