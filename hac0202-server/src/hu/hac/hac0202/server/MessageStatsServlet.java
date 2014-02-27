@@ -44,6 +44,7 @@ public class MessageStatsServlet extends HttpServlet {
 			
 			for(int i=0;i<data.length;i++){
 				current++;
+				current = current%data.length;
 				if (i == 0){
 					out.println();
 				}else{
