@@ -7,6 +7,10 @@
     <servlet-name>control</servlet-name>
     <servlet-class>hu.hac.hac0202.server.HAC0202ControlServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>stat</servlet-name>
+    <servlet-class>hu.hac.hac0202.server.MessageStatsServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>default</servlet-name>
@@ -15,5 +19,9 @@
   <servlet-mapping>
     <servlet-name>control</servlet-name>
     <url-pattern>/control</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>stat</servlet-name>
+    <url-pattern>/stat</url-pattern>
   </servlet-mapping>
 </web-app>
