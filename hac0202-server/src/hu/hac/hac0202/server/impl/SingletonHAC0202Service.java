@@ -4,10 +4,13 @@
 package hu.hac.hac0202.server.impl;
 
 import hu.hac.IControlService;
+import hu.hac.IHACServiceEventListener;
 import hu.hac.hac0202.server.HAC0202Manager;
 import hu.hac.hac0202.server.IHAC0202ControlService;
 import hu.hac.impl.AbstractControlServiceThread;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -18,15 +21,46 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class SingletonHAC0202Service extends AbstractControlServiceThread implements IHAC0202ControlService{
 
 	private static IControlService instance = null;
+	private static StatisticsServiceEventListener stats;
+	
+	public static StatisticsServiceEventListener getStats() {
+		return stats;
+	}
 	
 	public static IControlService getInstance() {
 		if (instance == null){
 			instance = new SingletonHAC0202Service();
+			stats = new StatisticsServiceEventListener(168);
+			((SingletonHAC0202Service)instance).addListener(stats);
 		}
 		return instance;
 	}
 	
-	private static long CONF_TIMEOUT = 1000;
+	private final Set<IHACServiceEventListener> listeners = new HashSet<>();
+	
+	private final IHACServiceEventListener eventGun = new IHACServiceEventListener() {
+		
+		@Override
+		public void messageTimeoutOccurred(int msgID) {
+			for(IHACServiceEventListener l : listeners) l.messageTimeoutOccurred(msgID);
+		}
+		
+		@Override
+		public void messageSendingSucceeded(int msgID) {
+			for(IHACServiceEventListener l : listeners) l.messageSendingSucceeded(msgID);
+		}
+		
+		@Override
+		public void messageSendingFailed(int msgID) {
+			for(IHACServiceEventListener l : listeners) l.messageSendingFailed(msgID);
+		}
+	};
+	
+	public void addListener(IHACServiceEventListener listener){
+		listeners.add(listener);
+	}
+	
+	private static long CONF_TIMEOUT = 20;
 	private static long CONF_RETRY = 3;
 	
 	private static int CMDID_RELAY = 0;
@@ -73,13 +107,14 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 				if (f.getId() == MSGID_UNKNOWN_MSG){
 					if (current != null && current.getId() == f.getData()){
 						// sent message ID is unknown by target, give up sending
-						System.err.println("Message ID unknown by target: "+current.getId());
+						eventGun.messageSendingFailed(current.getId());
 						current = null;
 					}
 				}
 				if (f.getId() == MSGID_ACK){
 					if (current != null && current.getId() == f.getData()){
 						// ACK received, finished sending
+						eventGun.messageSendingSucceeded(current.getId());
 						current = null;
 					}
 				}
@@ -106,8 +141,8 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 						manager.send(current);
 					} catch (Exception e) {
 						// Error may be permanent, give up sending
+						eventGun.messageSendingFailed(current.getId());
 						current = null;
-						System.out.println("Could not send message ("+e.getMessage()+")");
 					}
 					sentTime = System.currentTimeMillis();
 				}else{
@@ -127,13 +162,13 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 				}
 			} catch (Exception e) {
 				// no device, or other permanent problem
+				eventGun.messageSendingFailed(current.getId());
 				current = null;
-				System.err.println("Sending failed ("+e.getMessage()+")");
 			}
 		}
 		super.step();
 	}
-
+	
 	@Override
 	public void sendCommandSafely(int id, int data) {
 		frames.add(new HAC0202Frame(id, data));

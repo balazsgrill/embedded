@@ -49,7 +49,11 @@ public class HAC0202Manager {
 	}
 	
 	public void send(HAC0202Frame frame) throws MCP2200Exception, Exception{
-		getConnection().send(frame.toRawByte());
+		try{
+			getConnection().send(frame.toRawByte());
+		}catch(MCP2200Exception e){
+			
+		}
 	}
 	
 	private byte[] leftovers = new byte[0];
