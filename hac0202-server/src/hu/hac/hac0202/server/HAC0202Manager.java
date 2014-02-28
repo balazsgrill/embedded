@@ -1,9 +1,5 @@
 package hu.hac.hac0202.server;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import hu.hac.hac0202.server.impl.HAC0202Frame;
 import hu.mcp2200.IMCP2200Connection;
 import hu.mcp2200.IMCP2200Device;
@@ -11,6 +7,10 @@ import hu.mcp2200.MCP2200Configuration;
 import hu.mcp2200.MCP2200Exception;
 import hu.mcp2200.MCP2200JNI;
 import hu.mcp2200.MCP2200Manager;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class HAC0202Manager {
 
@@ -59,7 +59,6 @@ public class HAC0202Manager {
 	private byte[] leftovers = new byte[0];
 	
 	public HAC0202Frame[] read() throws MCP2200Exception, Exception{
-		int dropped = 0;
 		List<HAC0202Frame> result = new ArrayList<>(32);
 		byte[] data = new byte[64];
 		int r = getConnection().receive(data);
@@ -81,7 +80,6 @@ public class HAC0202Manager {
 			if (s.length() == 1) sb.append("0");
 			sb.append(s);sb.append(" ");
 		}
-		System.out.println(sb.toString());
 		
 		while(r-index >= 2){
 			HAC0202Frame frame = HAC0202Frame.parseFrame(data, index);
@@ -90,7 +88,6 @@ public class HAC0202Manager {
 				index += 2;
 			}else{
 				/* Drop byte */
-				dropped++;
 				index++;
 			}
 		}
@@ -98,7 +95,6 @@ public class HAC0202Manager {
 		leftovers = new byte[r-index];
 		System.arraycopy(data, index, leftovers, 0, leftovers.length);
 		
-		System.out.println("Dropped "+dropped);
 		return result.toArray(new HAC0202Frame[result.size()]);
 	}
 
