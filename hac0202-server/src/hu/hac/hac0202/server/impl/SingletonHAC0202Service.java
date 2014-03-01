@@ -161,6 +161,7 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 					sentTime = System.currentTimeMillis();
 				}else{
 					/* Give up */
+					eventGun.messageTimeoutOccurred(current.getId());
 					current = null;
 				}
 			}
