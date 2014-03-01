@@ -59,8 +59,8 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 		listeners.add(listener);
 	}
 	
-	private static long CONF_TIMEOUT = 20;
-	private static long CONF_RETRY = 3;
+	private static long CONF_TIMEOUT = 1000;
+	private static long CONF_RETRY = 5;
 	
 	private static int CMDID_RELAY = 0;
 	private static int CMDID_PWM1 = 1;
@@ -105,6 +105,10 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 	
 	public long getPeriod() {
 		return period;
+	}
+	
+	public long getLastStep() {
+		return lastStep;
 	}
 	
 	@Override

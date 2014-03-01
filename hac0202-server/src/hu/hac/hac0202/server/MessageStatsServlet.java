@@ -41,6 +41,7 @@ public class MessageStatsServlet extends HttpServlet {
 			int current = stats.getCurrent();
 			out.print("{ queue : ");out.print(SingletonHAC0202Service.getInstance().getQueueLength());
 			out.print(", period : ");out.print(SingletonHAC0202Service.getInstance().getPeriod());
+			out.print(", lastCycle : ");out.print(SingletonHAC0202Service.getInstance().getLastStep());
 			out.print(", histogram :[");
 			
 			for(int i=0;i<data.length;i++){
