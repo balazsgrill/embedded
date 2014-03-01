@@ -97,10 +97,21 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 		register("P2", new PWMDeviceControl(this, CMDID_PWM2));
 		
 		register("L", new CompositeLamp(R1, P1));
+		lastStep = System.currentTimeMillis();
+	}
+	
+	long period = 0;
+	long lastStep = 0;
+	
+	public long getPeriod() {
+		return period;
 	}
 	
 	@Override
 	protected void step() {
+		long time = System.currentTimeMillis();
+		period = time-lastStep;
+		lastStep = time;
 		try {
 			for(HAC0202Frame f: manager.read()){
 				if (f.getId() == MSGID_UNKNOWN_MSG){
