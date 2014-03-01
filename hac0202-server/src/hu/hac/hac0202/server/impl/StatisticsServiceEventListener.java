@@ -49,6 +49,7 @@ public class StatisticsServiceEventListener implements IHACServiceEventListener{
 			}
 			current = (current + diff)%maxhours;
 			data[current] = null;
+			lastHour = hr;
 		}
 		
 		int[] r = data[current];

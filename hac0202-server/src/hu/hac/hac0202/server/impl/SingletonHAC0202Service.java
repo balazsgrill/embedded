@@ -3,7 +3,6 @@
  */
 package hu.hac.hac0202.server.impl;
 
-import hu.hac.IControlService;
 import hu.hac.IHACServiceEventListener;
 import hu.hac.hac0202.server.HAC0202Manager;
 import hu.hac.hac0202.server.IHAC0202ControlService;
@@ -20,14 +19,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SingletonHAC0202Service extends AbstractControlServiceThread implements IHAC0202ControlService{
 
-	private static IControlService instance = null;
+	private static SingletonHAC0202Service instance = null;
 	private static StatisticsServiceEventListener stats;
 	
 	public static StatisticsServiceEventListener getStats() {
 		return stats;
 	}
 	
-	public static IControlService getInstance() {
+	public static SingletonHAC0202Service getInstance() {
 		if (instance == null){
 			instance = new SingletonHAC0202Service();
 			stats = new StatisticsServiceEventListener(168);
@@ -172,6 +171,10 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 	@Override
 	public void sendCommandSafely(int id, int data) {
 		frames.add(new HAC0202Frame(id, data));
+	}
+	
+	public int getQueueLength(){
+		return frames.size()+(current != null ? 1 : 0);
 	}
 	
 }

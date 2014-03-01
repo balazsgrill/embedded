@@ -39,8 +39,8 @@ public class MessageStatsServlet extends HttpServlet {
 		synchronized (stats) {
 			int[][] data = stats.getData();
 			int current = stats.getCurrent();
-			
-			out.print("[");
+			out.print("{ queue : ");out.print(SingletonHAC0202Service.getInstance().getQueueLength());
+			out.print(", histogram :[");
 			
 			for(int i=0;i<data.length;i++){
 				current++;
@@ -64,7 +64,7 @@ public class MessageStatsServlet extends HttpServlet {
 				
 			}
 			
-			out.print("]");
+			out.print("]}");
 		} 
 		out.close();
 	}
