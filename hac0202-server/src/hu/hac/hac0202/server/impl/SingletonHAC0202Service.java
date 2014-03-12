@@ -145,12 +145,7 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 			readFailure++;
 			if (readFailure > CONF_READ_RETRY){
 				readFailure = 0;
-				try {
-					manager.getConnection().dispose();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				manager.disconnect();
 			}
 		}
 		

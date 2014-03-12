@@ -39,6 +39,14 @@ public class HAC0202Manager {
 		return device;
 	}
 	
+	public void disconnect(){
+		if (connection != null){
+			connection.dispose();
+			connection = null;
+			device = null;
+		}
+	}
+	
 	public IMCP2200Connection getConnection() throws Exception{
 		getDevice();
 		return connection;
