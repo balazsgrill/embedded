@@ -61,6 +61,7 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 	
 	private static long CONF_TIMEOUT = 1000;
 	private static long CONF_RETRY = 5;
+	private static int CONF_READ_RETRY = 10;
 	
 	private static int CMDID_RELAY = 0;
 	private static int CMDID_PWM1 = 1;
@@ -82,7 +83,7 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 	private long sentTime;
 	private int tries;
 	
-	private boolean readFailure = false;
+	private int readFailure = 0;
 	
 	@Override
 	protected void initialize() {
@@ -133,14 +134,23 @@ public class SingletonHAC0202Service extends AbstractControlServiceThread implem
 					}
 				}
 			}
-			if (readFailure){
+			if (readFailure > 0){
 				System.err.println("Reading recovered!");
 			}
-			readFailure = false;
+			readFailure = 0;
 		} catch (Exception e) {
-			if (!readFailure){
-				readFailure = true;
+			if (readFailure == 0){
 				System.err.println("Cannot read ("+e.getMessage()+")");
+			}
+			readFailure++;
+			if (readFailure > CONF_READ_RETRY){
+				readFailure = 0;
+				try {
+					manager.getConnection().dispose();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		
