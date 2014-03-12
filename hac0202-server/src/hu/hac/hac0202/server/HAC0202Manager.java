@@ -28,7 +28,6 @@ public class HAC0202Manager {
 					config.desiredBaudRate = 9600;
 					connection.configure(config);
 				} catch (MCP2200Exception e) {
-					device = null;
 					throw e;
 				}
 			}
