@@ -1,4 +1,4 @@
-MCP2200 = ../mcp2200
+MCP2200 = ../../mcp2200
 
 all: bin/hac0202ctrl
 
