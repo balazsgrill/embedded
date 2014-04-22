@@ -1,0 +1,14 @@
+grammar hac.controls <Control>;
+import basics;
+
+terminal KW_BUTTON "button" 10;
+terminal KW_LABEL "label" 10;
+terminal KW_ACTION "action" 10;
+terminal OP_SET "\=" 10;
+
+<Control> :- {"http://hac.hu/controls#Button" KW_BUTTON <ButtonSets>* ;
+
+<ButtonSets> :- KW_LABEL OP_SET label=STRING;
+<ButtonSets> :- KW_ACTION OP_SET action=<Action>;
+
+<Action> :- {"http://hac.hu/controls#CommandLineAction" command=STRING };

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated controls -->
+      <package
+            uri="http://hac.hu/controls"
+            class="hu.hac.controls.ControlsPackage"
+            genModel="controls.genmodel"/>
+   </extension>
+      <extension
+         point="hu.textualmodeler.grammars">
+      <grammar
+            id="hac.controls"
+            model="controls.grammar">
+      </grammar>
+   </extension>
+      <extension
+            id="hacgen"
+            point="org.eclipse.core.runtime.applications">
+         <application
+               cardinality="singleton-global"
+               thread="main"
+               visible="true">
+            <run
+                  class="hu.hac.server.generator.Application">
+            </run>
+         </application>
+      </extension>
+      <extension
+            id="hacgen"
+            point="org.eclipse.core.runtime.products">
+         <product
+               application="hu.hac.server.generator.hacgen"
+               name="Control page generator">
+            <property
+                  name="appName"
+                  value="Control page generator">
+            </property>
+         </product>
+      </extension>
+
+</plugin>
