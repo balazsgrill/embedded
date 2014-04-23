@@ -5,7 +5,7 @@
   <!-- Declare the existence of a servlet. -->
   <servlet>
     <servlet-name>control</servlet-name>
-    <servlet-class>TestControl</servlet-class>
+    <servlet-class>hu.hac.server.ControlPage</servlet-class>
   </servlet>
 
   <servlet-mapping>
