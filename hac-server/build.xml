@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2014.02.06. 13:15:01                                                        
+                   
+     balazs.grill                                                                
+     ====================================================================== -->
+<project name="project" default="dist">
+	
+    <target name="dist">
+        <mkdir dir="WEB-INF/classes"/>
+    	<javac debug="true"
+    		  destdir="WEB-INF/classes">
+    		<src dir="src" />
+    		<src dir="src-gen" />
+    		<classpath path="servlet-api.jar" />
+    	</javac>
+    	<jar destfile="hac.war">
+    		<fileset dir="." includes="WEB-INF/**" />
+    		<manifest>
+				<attribute name="Implementation-Title" value="Home Automation Controller"/>
+				<attribute name="Implementation-Version" value="0.1"/>
+    		</manifest>
+    	</jar>
+    </target>
+	
+	<target name="servlet-api.jar">
+		<get dest="servlet-api.jar" src="http://central.maven.org/maven2/org/eclipse/jetty/orbit/javax.servlet/3.0.0.v201112011016/javax.servlet-3.0.0.v201112011016.jar"/>
+	</target>
+
+</project>

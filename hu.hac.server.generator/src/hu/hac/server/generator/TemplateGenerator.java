@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -52,7 +53,7 @@ public class TemplateGenerator {
 			actions.put(actionID, action);
 			
 			sb.append("<form action=\"\" method=\"get\">");
-			sb.append("<input type=\"hidden\" value=\"");sb.append(actionID);sb.append("\"/>");
+			sb.append("<input type=\"hidden\" name=\"actionid\" value=\"");sb.append(actionID);sb.append("\"/>");
 			sb.append("<input type=\"submit\" value=\"");sb.append(label);sb.append("\"/>");
 			sb.append("</form>");
 		}
@@ -137,25 +138,47 @@ public class TemplateGenerator {
 			sb.append(";\n");
 		}
 		
+		sb.append("\n");
+		sb.append("import java.util.Map;\n");
+		sb.append("\n");
 		sb.append("import hu.hac.server.IControlPage;\n");
 		sb.append("import hu.hac.server.IControlAction;\n");
-		sb.append("import hu.hac.server.CommandLineAction\n");
+		sb.append("import hu.hac.server.CommandLineAction;\n");
+		sb.append("import hu.hac.server.AbstractControlPageServlet;\n");
+		sb.append("\n");
 		
 		sb.append("public class ");sb.append(className);
-		sb.append(" implements IControlPage");sb.append("{\n");
+		sb.append(" extends AbstractControlPageServlet implements IControlPage");sb.append("{\n");
+		
+		
+		sb.append("\n\nprivate static final long serialVersionUID = ");
+		long id = Math.round(Long.MAX_VALUE*new Random().nextDouble());
+		sb.append(id);sb.append("L;\n");
+		
 		{
-			sb.append("private final byte[] outputData = {");
+			sb.append("\nprivate final byte[] outputData = {\n\t\t");
 			boolean first = true;
+			final int row = 20;
+			int c = 0;
 			for(int i=0;i<outputData.length;i++){
-				if (first) first=false; else sb.append(", ");
-				sb.append(outputData[i]);
+				if (first) first=false; else sb.append(",");
+				if (c == row){
+					sb.append("\n\t\t");
+					c = 0;
+				}
+				c++;
+				String b = Byte.toString(outputData[i]);
+				for(int j = 0;j<(4-b.length());j++) sb.append(" ");
+				sb.append(b);
 			}
-			sb.append("};\n");
+			sb.append("\n\t};\n");
 		}
 		
-		sb.append("@Override\npublic byte[] getPage(){\n\treturn outputData;\n}\n");
+		sb.append("\n@Override\npublic IControlPage getPage(){\n\treturn this;\n}\n");
 		
-		sb.append("@Override\npublic IControlAction getAction(String actionID, Map<String, String> options){\n");
+		sb.append("\n@Override\npublic byte[] getPageContent(){\n\treturn outputData;\n}\n");
+		
+		sb.append("\n@Override\npublic IControlAction getAction(String actionID, Map<String, String> options){\n");
 		sb.append("\tswitch(actionID){\n");
 		for(Entry<String, Action> actionEntry : actions.entrySet()){
 			sb.append("\t\tcase \"");sb.append(actionEntry.getKey());sb.append("\":\t\t");

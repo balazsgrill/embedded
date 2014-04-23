@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
-  <display-name>HAC0202 controller</display-name>
+  <display-name>Home Automation Controller</display-name>
 
   <!-- Declare the existence of a servlet. -->
   <servlet>
     <servlet-name>control</servlet-name>
-    <servlet-class>hu.hac.hac0202.server.HAC0202ControlServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>stat</servlet-name>
-    <servlet-class>hu.hac.hac0202.server.MessageStatsServlet</servlet-class>
+    <servlet-class>TestControl</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>control</servlet-name>
-    <url-pattern>/control</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>stat</servlet-name>
-    <url-pattern>/stat</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
 </web-app>

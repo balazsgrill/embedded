@@ -3,7 +3,6 @@
 
 <product name="Control page generator" uid="hu.hac.server.generator.hacgen" id="hu.hac.server.generator.hacgen" application="hu.hac.server.generator.hacgen" version="0.1.0" useFeatures="false" includeLaunchers="false">
 
-
    <configIni use="default">
    </configIni>
 
@@ -15,7 +14,6 @@
 
    <windowImages/>
 
-
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -23,11 +21,9 @@
       </win>
    </launcher>
 
-
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7</windows>
    </vm>
-
 
    <plugins>
       <plugin id="hu.hac.server.generator"/>
@@ -52,6 +48,7 @@
       <plugin id="org.eclipse.emf"/>
       <plugin id="org.eclipse.emf.common"/>
       <plugin id="org.eclipse.emf.ecore"/>
+      <plugin id="org.eclipse.emf.ecore.xmi"/>
       <plugin id="org.eclipse.equinox.app"/>
       <plugin id="org.eclipse.equinox.common"/>
       <plugin id="org.eclipse.equinox.preferences"/>

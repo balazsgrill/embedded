@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public interface IControlPage {
 
-	public byte[] getPage();
+	public byte[] getPageContent();
 	
 	public IControlAction getAction(String actionID, Map<String, String> options);
 	
