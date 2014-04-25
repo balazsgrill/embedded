@@ -10,7 +10,7 @@ import hu.hac.server.AbstractControlPageServlet;
 public class ControlPage extends AbstractControlPageServlet implements IControlPage{
 
 
-private static final long serialVersionUID = 6661160976702961664L;
+private static final long serialVersionUID = 1320131320059769856L;
 
 private final byte[] outputData = {
 		  60,  33,  68,  79,  67,  84,  89,  80,  69,  32, 104, 116, 109, 108,  62,  10,  60, 104, 116, 109,
@@ -72,12 +72,12 @@ public byte[] getPageContent(){
 @Override
 public IControlAction getAction(String actionID, Map<String, String> options){
 	switch(actionID){
-		case "action0":		return new CommandLineAction("echo 0");
-		case "action1":		return new CommandLineAction("echo 0");
-		case "action2":		return new CommandLineAction("echo 0");
-		case "action3":		return new CommandLineAction("echo 0");
-		case "action4":		return new CommandLineAction("echo 0");
-		case "action5":		return new CommandLineAction("echo 0");
+		case "action0":		return new CommandLineAction("hac0202ctrl 1 0");
+		case "action1":		return new CommandLineAction("hac0202ctrl 1 64");
+		case "action2":		return new CommandLineAction("hac0202ctrl 1 128");
+		case "action3":		return new CommandLineAction("hac0202ctrl 1 255");
+		case "action4":		return new CommandLineAction("hac0202ctrl 0 8");
+		case "action5":		return new CommandLineAction("hac0202ctrl 0 4");
 	default: return null;
 	}
 }

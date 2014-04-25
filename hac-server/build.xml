@@ -47,10 +47,13 @@
 	
     <target name="dist">
         <mkdir dir="WEB-INF/classes"/>
+	<path id="src.path">
+	    <pathelement location="src" />
+	    <pathelement location="src-gen" />
+	</path>
     	<javac debug="true"
     		  destdir="WEB-INF/classes">
-    		<src dir="src" />
-    		<src dir="src-gen" />
+    		<src refid="src.path" />
     		<classpath path="servlet-api.jar" />
     	</javac>
     	<jar destfile="hac.war">

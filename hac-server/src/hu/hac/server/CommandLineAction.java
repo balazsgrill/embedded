@@ -25,8 +25,8 @@ public class CommandLineAction implements IControlAction {
 	 */
 	@Override
 	public void execute(Map<String, String> options) throws Exception {
-		ProcessBuilder pb = new ProcessBuilder(commandLine);
-		Process process = pb.start();
+		//ProcessBuilder pb = new ProcessBuilder(commandLine.split(" "));
+		Process process = Runtime.getRuntime().exec(commandLine.split(" "), null, null); //pb.start();
 
 		int returnCode = process.waitFor();
 		
