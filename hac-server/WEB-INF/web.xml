@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <display-name>Home Automation Controller</display-name>
+
+  <!-- Declare the existence of a servlet. -->
+  <servlet>
+    <servlet-name>control</servlet-name>
+    <servlet-class>hu.hac.server.ControlPage</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>control</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+</web-app>

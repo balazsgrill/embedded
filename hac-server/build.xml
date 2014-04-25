@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2014.02.06. 13:15:01                                                        
+                   
+     balazs.grill                                                                
+     ====================================================================== -->
+<project name="project" default="dist">
+	
+	<property name="eclipse.home" value="generator-tool/hac-gen"/>
+	 
+	  <!-- store path to newest launcher JAR in path id 'newest.equinox.launcher.path.id' -->
+	  <path id="newest.equinox.launcher.path.id">
+	    <first count="1">
+	      <sort>
+	        <fileset dir="${eclipse.home}/plugins" includes="**/org.eclipse.equinox.launcher_*.jar"/>
+	        <reverse xmlns="antlib:org.apache.tools.ant.types.resources.comparators">
+	          <date/>
+	        </reverse>
+	      </sort>
+	    </first>
+	  </path>
+	 
+	  <!-- turn the path into a property -->
+	  <property name="equinox.launcher.jar.location" refid="newest.equinox.launcher.path.id" />
+	
+	<!-- = = = = = = = = = = = = = = = = =
+          macrodef: servlet-gen          
+         = = = = = = = = = = = = = = = = = -->
+    <macrodef name="servlet-gen">
+  	  	<!-- you can now reference the jar through the property ${equinox.launcher.jar.location} -->
+        <attribute name="template"/>
+        <attribute name="target"/>
+    	<attribute name="qualifiedName"/>
+        <sequential>
+        	<echo message="Using equinox launcher jar: ${equinox.launcher.jar.location}" />
+            <java jar="${equinox.launcher.jar.location}" fork="true">
+				<arg value="@{template}"/>
+            	<arg value="@{target}"/>
+            	<arg value="@{qualifiedName}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+	<target name="generate">
+		<servlet-gen template="src/control.html" target="src-gen" qualifiedname="hu.hac.server.ControlPage"/>
+	</target>
+	
+    <target name="dist">
+        <mkdir dir="WEB-INF/classes"/>
+    	<javac debug="true"
+    		  destdir="WEB-INF/classes">
+    		<src dir="src" />
+    		<src dir="src-gen" />
+    		<classpath path="servlet-api.jar" />
+    	</javac>
+    	<jar destfile="hac.war">
+    		<fileset dir="." includes="WEB-INF/**" />
+    		<manifest>
+				<attribute name="Implementation-Title" value="Home Automation Controller"/>
+				<attribute name="Implementation-Version" value="0.1"/>
+    		</manifest>
+    	</jar>
+    </target>
+	
+	<target name="servlet-api.jar">
+		<get dest="servlet-api.jar" src="http://central.maven.org/maven2/org/eclipse/jetty/orbit/javax.servlet/3.0.0.v201112011016/javax.servlet-3.0.0.v201112011016.jar"/>
+	</target>
+
+</project>

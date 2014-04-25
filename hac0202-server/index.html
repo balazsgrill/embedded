@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Device control page</title>
+<script src="http://fryn.github.io/html5slider/html5slider.js"></script>
+<script type="text/javascript">
+function control(dev, value){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","control?dev="+dev+"&value="+value,true);
+	xmlhttp.send();
+}
+
+function queryLamp(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","control?dev=L",true);
+	xmlhttp.onload = function(e){
+		var v = xmlhttp.responseText;
+		document.getElementById('lamp').value=v;
+		document.getElementById('lampValue').innerHTML=v;
+	}
+	xmlhttp.send();
+}
+
+function queryFrame(){
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("GET","control?dev=R2",true);
+	xmlhttp.onload = function(e){
+		var v = xmlhttp.responseText;
+		document.getElementById('frame').checked = (v == '0') ? false : true;
+		document.getElementById('frameValue').innerHTML=v;
+	}
+	xmlhttp.send();
+}
+
+function preload(){
+	setInterval(function(){queryLamp();queryFrame()},1000);
+}
+
+function updateLamp(){
+	var value = document.getElementById('lamp').value;
+	control("L", value);
+}
+function updateFrame(){
+	var check = document.getElementById('frame').checked;
+	var value = (check == true) ? 1 : 0;
+	control("R2", value);
+}
+</script>
+</head>
+<body onload="preload()">
+Lamp: <input id="lamp" type="range" min="0" max="255" onchange="updateLamp()" /><span id="lampValue"></span>
+<br />
+Frame: <input id="frame" type="checkbox" onchange="updateFrame()"/><span id="frameValue"></span>
+</body>
+</html>
