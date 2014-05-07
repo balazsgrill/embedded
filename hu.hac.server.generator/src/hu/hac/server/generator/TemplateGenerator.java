@@ -52,10 +52,8 @@ public class TemplateGenerator {
 			Action action = ((Button) element).getAction();
 			actions.put(actionID, action);
 			
-			sb.append("<form action=\"\" method=\"get\">");
-			sb.append("<input type=\"hidden\" name=\"actionid\" value=\"");sb.append(actionID);sb.append("\"/>");
-			sb.append("<input type=\"submit\" value=\"");sb.append(label);sb.append("\"/>");
-			sb.append("</form>");
+			sb.append("<a class=\"button\" href=\"?actionid=");sb.append(actionID);sb.append("\">");
+			sb.append(label);sb.append("</a>");
 		}
 		return sb.toString();
 	}
