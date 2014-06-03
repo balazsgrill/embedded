@@ -1,0 +1,115 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 2014.06.02. 14:22:16
+
+BeginCmp
+TimeStamp = /538C6A8A;
+Reference = K1;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6A99;
+Reference = K2;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5CB6;
+Reference = P1;
+ValeurCmp = CONN_3X2;
+IdModule  = pure-connector-3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5CCB;
+Reference = P2;
+ValeurCmp = CONN_3X2;
+IdModule  = pin_array_3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5D2D;
+Reference = P3;
+ValeurCmp = CONN_5X2;
+IdModule  = pure-connector-5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5D3C;
+Reference = P4;
+ValeurCmp = CONN_5X2;
+IdModule  = PIN_ARRAY_5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5FD8;
+Reference = P5;
+ValeurCmp = CONN_3X2;
+IdModule  = pure-connector-3x2-holder;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5FDE;
+Reference = P6;
+ValeurCmp = CONN_3X2;
+IdModule  = pin_array_3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5FE4;
+Reference = P7;
+ValeurCmp = CONN_5X2;
+IdModule  = pure-connector-5x2-holder;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C5FEA;
+Reference = P8;
+ValeurCmp = CONN_5X2;
+IdModule  = PIN_ARRAY_5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6022;
+Reference = P9;
+ValeurCmp = CONN_3X2;
+IdModule  = pure-connector-3x2-holder;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6031;
+Reference = P10;
+ValeurCmp = CONN_5X2;
+IdModule  = pure-connector-5x2-holder;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6A63;
+Reference = P11;
+ValeurCmp = CONN_3X2;
+IdModule  = pure-connector-3x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6BEF;
+Reference = P12;
+ValeurCmp = CONN_5;
+IdModule  = SIL-5;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6A72;
+Reference = P13;
+ValeurCmp = CONN_5X2;
+IdModule  = pure-connector-5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /538C6BFE;
+Reference = P14;
+ValeurCmp = CONN_5;
+IdModule  = SIL-5;
+EndCmp
+
+EndListe
