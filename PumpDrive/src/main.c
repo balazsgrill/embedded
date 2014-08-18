@@ -24,8 +24,8 @@
 #pragma config LVP = ON         // Low-Voltage Programming Enable (Low-voltage programming enabled)
 
 void pwm(uint16 value){
-    CCPR4L = value & 0xFFu;
-    CCP4CONbits.DC4B = (value >> 8u) & 0x3u;
+    CCPR4L = (value >> 2u) & 0xFFu;
+    //CCP4CONbits.DC4B = (value >> 8u) & 0x3u;
 }
 
 /*
