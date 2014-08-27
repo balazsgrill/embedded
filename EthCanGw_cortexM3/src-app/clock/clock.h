@@ -12,5 +12,6 @@
 
 extern void clock_setup(void);
 extern void SysTickIntHandler(void);
+extern uint32_t sys_now(void);
 
 #endif /* CLOCK_H_ */

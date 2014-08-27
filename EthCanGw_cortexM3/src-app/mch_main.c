@@ -13,7 +13,8 @@
 
 #include <enc28j60.h>
 
-#include "hello.h"
+#include "display.h"
+#include "clock/clock.h"
 
 struct ip_addr mch_myip_addr = {0x0200a8c0UL}; /* 192.168.0.2 */
 struct ip_addr gw_addr = {0x0100a8c0UL}, netmask = {0x000000ffUL}; /* 192.168.0.1 */
@@ -21,7 +22,6 @@ struct ip_addr gw_addr = {0x0100a8c0UL}, netmask = {0x000000ffUL}; /* 192.168.0.
 static struct netif mchdrv_netif;
 
 static enc_device_t mchdrv_hw;
-static uint32_t now;
 
 void mch_net_init(void)
 {
@@ -60,13 +60,13 @@ int main(void)
 	    ROM_SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
 	                       SYSCTL_XTAL_8MHZ);
 
-	now = 0u;
+	    clock_setup();
     mch_net_init();
 
-    hello();
+    display_init();
     while (1) {
-    	now++;
-        mch_net_poll();
+        //mch_net_poll();
         sys_check_timeouts();
+        display_refresh();
     }
 }
