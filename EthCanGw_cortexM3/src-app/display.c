@@ -11,6 +11,10 @@
 #include "grlib/grlib.h"
 #include "drivers/formike128x128x16.h"
 #include "clock/clock.h"
+#include <lwip/dhcp.h>
+#include <lwip/ip_addr.h>
+#include <lwip/netif.h>
+
 
 static tContext sContext;
 
@@ -101,8 +105,18 @@ void display_init(){
 static void display_draw(){
 		char text[20];
 	 tRectangle sRect;
+	 short middle;
+	 int i;
 
-	 (void)itoa(last_time, text, 10);
+	 /* Clear all */
+	 sRect.sXMin = 0;
+	 sRect.sYMin = 0;
+	 sRect.sXMax = GrContextDpyWidthGet(&sContext) - 1;
+	 sRect.sYMax = GrContextDpyHeightGet(&sContext) - 1;
+	 GrContextForegroundSet(&sContext, ClrBlack);
+	 GrRectFill(&sContext, &sRect);
+
+	 middle =  GrContextDpyWidthGet(&sContext) / 2;
 
 		    //
 		    // Fill the top 15 rows of the screen with blue to create the banner.
@@ -120,26 +134,33 @@ static void display_draw(){
 		    GrContextForegroundSet(&sContext, ClrWhite);
 		    GrRectDraw(&sContext, &sRect);
 
-		    //
-		    // Put the application name in the middle of the banner.
-		    //
 		    GrContextFontSet(&sContext, &g_sFontFixed6x8);
 		    GrStringDrawCentered(&sContext, "lwip", -1,
-		                         GrContextDpyWidthGet(&sContext) / 2, 7, 0);
+		                        middle, 7, 0);
 
-		    //
-		    // Say hello using the Computer Modern 20 point font.
-		    //
-		    GrContextFontSet(&sContext, &g_sFontCm20);
-		    GrStringDrawCentered(&sContext, text, -1,
-		                         GrContextDpyWidthGet(&sContext) / 2,
-		                         ((GrContextDpyHeightGet(&sContext) - 16) / 2) + 16,
-		                         0);
+		    GrStringDraw(&sContext, "Uptime (s)", -1, 2, 16, 0);
+		    (void)itoa(last_time/1000, text, 10);
+		    GrStringDraw(&sContext, text, -1, middle, 16, 0);
+
+		    GrStringDraw(&sContext, "DHCP state", -1, 2, 26, 0);
+		    (void)itoa(netif_default->dhcp->state, text, 10);
+		    GrStringDraw(&sContext, text, -1, middle, 26, 0);
+
+		    GrStringDraw(&sContext, "IP address", -1, 2, 36, 0);
+		    for(i=0;i<4;i++){
+		    	(void)itoa((netif_default->ip_addr.addr >> (i*8))&0xff, text, 10);
+		    	GrStringDraw(&sContext, text, -1, 10+(i*32), 46, 0);
+		    	if (i != 3){
+		    		GrStringDraw(&sContext, ".", -1, 10+(i*32)+6, 46, 0);
+		    	}
+		    }
 
 		    //
 		    // Flush any cached drawing operations.
 		    //
 		    GrFlush(&sContext);
+
+
 }
 
 void display_refresh(){

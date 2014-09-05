@@ -7,6 +7,7 @@
 #include <lwip/init.h>
 #include <lwip/stats.h>
 #include <lwip/timers.h>
+#include <lwip/dhcp.h>
 #include <netif/etharp.h>
 
 #include <netif/mchdrv.h>
@@ -45,6 +46,8 @@ void mch_net_init(void)
 
     netif_set_default(&mchdrv_netif);
     netif_set_up(&mchdrv_netif);
+
+    dhcp_start(&mchdrv_netif);
 }
 
 void mch_net_poll(void)
@@ -65,7 +68,7 @@ int main(void)
 
     display_init();
     while (1) {
-        //mch_net_poll();
+        mch_net_poll();
         sys_check_timeouts();
         display_refresh();
     }
