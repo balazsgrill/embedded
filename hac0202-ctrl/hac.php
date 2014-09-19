@@ -26,6 +26,9 @@ switch($_GET["actionid"]){
 <meta charset="UTF-8">
 <title>HAC controller</title>
 <style>
+html, body{
+    height: 100%;  
+}
 table{
   position: absolute;
   width: 90%;
@@ -34,9 +37,9 @@ table{
 a.button{
   background-color : #aaa;
   display: block;
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  width: 45%;
+  height: 30%;
 }
 </style>
 </head>
