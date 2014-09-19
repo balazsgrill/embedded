@@ -33,7 +33,7 @@ table{
 }
 a.button{
   background-color : #aaa;
-  display: table;
+  display: block;
   position: relative;
   width: 100%;
   height: 100%;
