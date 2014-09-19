@@ -34,24 +34,20 @@ a.button{
 </style>
 </head>
 <body>
-<a class="button" href="?actionid=0"> 0% </a>
-<a class="button" href="?actionid=1"> 25% </a>
-<br>
-<a class="button" href="?actionid=2"> 50% </a>
-<a class="button" href="?actionid=3"> 100% </a>
-<br>
-<a class="button" href="?actionid=4"> ON </a>
-<a class="button" href="?actionid=5"> OFF </a>
+<table>
+<tr>
+<td><a class="button" href="?actionid=0"> 0% </a></td>
+<td><a class="button" href="?actionid=1"> 25% </a></td>
+</tr>
+<tr>
+<td><a class="button" href="?actionid=2"> 50% </a></td>
+<td><a class="button" href="?actionid=3"> 100% </a></td>
+</tr><tr>
+<td><a class="button" href="?actionid=4"> ON </a></td>
+<td><a class="button" href="?actionid=5"> OFF </a></td>
+</tr>
+</table>
 
-
-
-{{button label=" 0% " action="hac0202ctrl 1 0"}}
-{{button label=" 25% " action="hac0202ctrl 1 64"}}
-{{button label=" 50% " action="hac0202ctrl 1 128"}}
-{{button label=" 100% " action="hac0202ctrl 1 255"}}
-<br>
-{{button label=" ON " action="hac0202ctrl 0 8"}}
-{{button label=" OFF " action="hac0202ctrl 0 4"}}
 
 </body>
 </html>
