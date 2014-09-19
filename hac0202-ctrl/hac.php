@@ -27,12 +27,14 @@ switch($_GET["actionid"]){
 <title>HAC controller</title>
 <style>
 table{
+  position: absolute;
   width: 100%;
-  height: 270px;
+  height: 100%;
 }
 a.button{
   background-color : #aaa;
   display: block;
+  position: relative;
   width: 100%;
   height: 100%;
 }
