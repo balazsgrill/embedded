@@ -1,22 +1,22 @@
 <?php
 switch($_GET["actionid"]){
   case "0":
-    exec("/home/cubie/git/embedded/hac0202-ctrl/bin/hac0202ctrl 1 0");
+    exec("/home/cubie/hac0202ctrl 1 0");
   break;
   case "1":
-    exec("/home/cubie/git/embedded/hac0202-ctrl/bin/hac0202ctrl 1 64");
+    exec("/home/cubie/hac0202ctrl 1 64");
   break;
   case "2":
-    exec("/home/cubie/git/embedded/hac0202-ctrl/bin/hac0202ctrl 1 128");
+    exec("/home/cubie/hac0202ctrl 1 128");
   break;
   case "3":
-    exec("/home/cubie/git/embedded/hac0202-ctrl/bin/hac0202ctrl 1 255");
+    exec("/home/cubie/hac0202ctrl 1 255");
   break;
   case "4":
-    exec("/home/cubie/git/embedded/hac0202-ctrl/bin/hac0202ctrl 0 8");
+    exec("/home/cubie/hac0202ctrl 0 8");
   break;
   case "5":
-    exec("/home/cubie/git/embedded/hac0202-ctrl/bin/hac0202ctrl 0 4");
+    exec("/home/cubie/hac0202ctrl 0 4");
   break;  
 }
 ?>
