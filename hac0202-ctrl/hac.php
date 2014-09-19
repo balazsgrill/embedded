@@ -28,7 +28,7 @@ switch($_GET["actionid"]){
 <style>
 table{
   width: 100%;
-  height: 100%;
+  height: 270px;
 }
 a.button{
   background-color : #aaa;
