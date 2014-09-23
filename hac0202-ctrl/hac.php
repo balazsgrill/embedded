@@ -29,35 +29,25 @@ switch($_GET["actionid"]){
 html, body{
     height: 100%;  
 }
-table{
-  position: absolute;
-  width: 90%;
-  height: 90%;
-}
+
 a.button{
   background-color : #aaa;
-  display: block;
-  position: absolute;
+  display: inline-block;
   width: 45%;
   height: 30%;
+  margin: 5px;
 }
 </style>
 </head>
 <body>
-<table>
-<tr>
-<td><a class="button" href="?actionid=0"> 0% </a></td>
-<td><a class="button" href="?actionid=1"> 25% </a></td>
-</tr>
-<tr>
-<td><a class="button" href="?actionid=2"> 50% </a></td>
-<td><a class="button" href="?actionid=3"> 100% </a></td>
-</tr><tr>
-<td><a class="button" href="?actionid=4"> ON </a></td>
-<td><a class="button" href="?actionid=5"> OFF </a></td>
-</tr>
-</table>
-
+<a class="button" href="?actionid=0"> 0% </a>
+<a class="button" href="?actionid=1"> 25% </a>
+<br>
+<a class="button" href="?actionid=2"> 50% </a>
+<a class="button" href="?actionid=3"> 100% </a>
+<br>
+<a class="button" href="?actionid=4"> ON </a>
+<a class="button" href="?actionid=5"> OFF </a>
 
 </body>
 </html>
