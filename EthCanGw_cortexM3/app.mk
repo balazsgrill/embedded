@@ -2,6 +2,7 @@
 APP_LIB = $(OBJ_DIR)/app.a
 SOURCES += $(wildcard src-app/*.c)
 SOURCES += $(wildcard src-app/clock/*.c)
+SOURCES += $(wildcard src-app/utils/*.c)
 SOURCES += $(wildcard $(BOARD_DRIVERS)/*.c)
 
 define CC_template

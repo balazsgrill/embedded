@@ -46,7 +46,9 @@ void clock_setup(void){
 	    SysTickEnable();
 }
 
-
+/**
+ * sys_now is required by lwIp to provide ms-based clock
+ */
 uint32_t sys_now(void)
 {
 	return clock_now;
