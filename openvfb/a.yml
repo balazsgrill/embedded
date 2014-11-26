@@ -1,0 +1,14 @@
+module id="qualified.id" {
+    provides {
+        directCall name="init" returns="void";
+        directCall name="write" returns="int"{
+        	arg name="data" type="unsigned char*";
+        	arg name="length" type="int";
+        }
+    }
+    
+    implementation{
+    	include path="include";
+    	source path="src/s.c";
+    }
+}

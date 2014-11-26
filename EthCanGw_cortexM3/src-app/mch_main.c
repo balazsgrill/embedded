@@ -26,6 +26,29 @@ static struct netif mchdrv_netif;
 
 static enc_device_t mchdrv_hw;
 
+static uint8_t mac_addr[6];
+
+void getMacAddr(char* buffer){
+	char section[5];
+		int i, j;
+		int l=0;
+		for(i=0;i<6;i++){
+			(void)itoa(mac_addr[i], section, 16);
+			if (i != 3){
+				j = count_chars(section, 4);
+				section[j] = ':';
+				section[j+1] = '\0';
+			}
+			l+=strcopy(section, buffer, l);
+		}
+}
+
+static DisplayEntry display_macAddr = {
+		"mac",
+		&getMacAddr
+};
+
+
 void main_getIpAddr(char* buffer){
 	char section[5];
 	int i, j;
@@ -101,7 +124,7 @@ void mch_net_init(void)
 	error_flags = 0u;
 
     // Initialize LWIP
-    lwip_init();
+    //lwip_init();
 
     mchdrv_netif.hwaddr_len = 6;
     /* demo mac address */
@@ -121,11 +144,11 @@ void mch_net_init(void)
         error_flags |= 1u;
     }
 
-    netif_set_default(&mchdrv_netif);
-    netif_set_up(&mchdrv_netif);
+    //netif_set_default(&mchdrv_netif);
+    //netif_set_up(&mchdrv_netif);
 
-    dhcp_start(&mchdrv_netif);
-    test_app_init();
+    //dhcp_start(&mchdrv_netif);
+    //test_app_init();
 }
 
 void mch_net_poll(void)
@@ -147,15 +170,27 @@ int main(void)
 	display_addEntry(&display_ipAddr);
 	display_addEntry(&display_errorFlags);
 	display_addEntry(&display_debug0);
+	display_addEntry(&display_macAddr);
 	display_refresh();
 
-    mch_net_init();
+   // mch_net_init();
 
 
     while (1) {
-        mch_net_poll();
+
+    	mac_addr[0] = enc_RCR_MAC(&mchdrv_netif, ENC_MAADR1);
+    	mac_addr[1] = enc_RCR_MAC(&mchdrv_netif, ENC_MAADR2);
+    	mac_addr[2] = enc_RCR_MAC(&mchdrv_netif, ENC_MAADR3);
+    	mac_addr[3] = enc_RCR_MAC(&mchdrv_netif, ENC_MAADR4);
+    	mac_addr[4] = enc_RCR_MAC(&mchdrv_netif, ENC_MAADR5);
+    	mac_addr[5] = enc_RCR_MAC(&mchdrv_netif, ENC_MAADR6);
+
+    	display_refresh();
+
+/*        mch_net_poll();
         sys_check_timeouts();
-        display_refresh();
+
         test_app_poll();
+        */
     }
 }
