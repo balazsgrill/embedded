@@ -1,0 +1,18 @@
+module id="module.producer" {
+    provides {
+        directCall name="init" returns="void";
+        directCall name="refresh" returns="void";
+        
+    }
+    
+    requires {
+    	directCall name="write" returns="void"{
+        	arg name="data" type="unsigned char";
+        }
+    }
+    
+    implementation{
+    	//include path="include";
+    	source path="producer.c";
+    }
+}
