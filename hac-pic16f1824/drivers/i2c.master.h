@@ -14,12 +14,14 @@ extern "C" {
 
 #include "mtypes.h"
 
-void i2c_init();
-void i2c_work();
-boolean i2c_canSend();
-void i2c_send(uint8 data);
-boolean i2c_canReceive();
-uint8 i2c_receive();
+extern void i2c_init(uint8 clockDiv);
+extern void i2c_send_address(uint8 address, uint8 rw);
+extern void i2c_send_data(uint8 data);
+extern uint8 i2c_read_data(void);
+extern void i2c_start(void);
+extern void i2c_stop(void);
+extern void i2c_ack(void);
+extern void i2c_nak(void);
 
 #ifdef	__cplusplus
 }

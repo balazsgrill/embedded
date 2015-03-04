@@ -1,0 +1,32 @@
+toolsets = xc8;
+
+xc8-library uart.lpp{
+	outputdir = out;
+	chip = 16F1824;
+	sources { drivers/uart.c }
+	headers { drivers/uart.h }
+}
+
+xc8-library i2c.slave.lpp{
+	outputdir = out;
+	chip = 16F1824;
+	sources { drivers/i2c.slave.c }
+	headers { drivers/i2c.slave.h }
+}
+
+xc8-library i2c.master.lpp{
+	outputdir = out;
+	chip = 16F1824;
+	sources { drivers/i2c.master.c }
+	headers { drivers/i2c.master.h }
+}
+
+xc8-application test.i2c.master.hex{
+	outputdir = out;
+	deps += i2c.master.lpp;
+	chip = 16F1824;
+	
+	sources { test-src/test.i2c.master.c }
+	
+	link-options = "-D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf --ram=default,-165-16f";
+}

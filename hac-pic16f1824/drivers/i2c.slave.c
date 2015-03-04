@@ -1,6 +1,4 @@
 #include <xc.h>
-
-
 #include "i2c.slave.h"
 
 /*
@@ -56,9 +54,9 @@ void i2c_init(uint8 address){
 static inline void i2c_doPutData(uint8 data){
     while(SSP1STATbits.BF);
     do{
-        SSP1CON1bits_t.WCOL = 0;
+        SSP1CON1bits.WCOL = 0u;
         SSPBUF = data;
-    }while(SSP1CON1bits_t.WCOL);
+    }while(SSP1CON1bits.WCOL);
     SSP1CON1bits.CKP = 1; // release the clock
 }
 

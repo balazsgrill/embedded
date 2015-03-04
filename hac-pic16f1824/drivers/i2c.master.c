@@ -1,3 +1,4 @@
+#include <xc.h>
 #include "i2c.master.h"
 
 /**
@@ -20,13 +21,13 @@
 
 void i2c_init(uint8 clockDiv){
 	SSP1CON1bits.SSPM=0x08;       // I2C Master mode, clock = Fosc/(4 * (SSPADD+1))
-	SSP1ADD = clockdiv;
+	SSP1ADD = clockDiv;
 	SSP1CON1bits.SSPEN=1;         // enable MSSP
 }
 
 void i2c_send_address(uint8 address, uint8 rw){
     PIR1bits.SSP1IF=0;
-    SSPBUF = (BlockAddress <<1) + (RW_bit & 1u);
+    SSPBUF = (address <<1) + (rw & 1u);
     while(!PIR1bits.SSP1IF);
 }
 
