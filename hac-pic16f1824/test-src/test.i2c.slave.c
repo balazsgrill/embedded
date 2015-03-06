@@ -30,11 +30,18 @@
 #pragma config BORV = LO        // Brown-out Reset Voltage Selection (Brown-out Reset Voltage (Vbor), low trip point selected.)
 #pragma config LVP = ON         // Low-Voltage Programming Enable (Low-voltage programming enabled)
 
-#include <i2c.master.h>
+#include <i2c.slave.h>
 
-void delay(){
-	uint8 i;
-	for(i=0;i<255;i++);
+uint8 cbk_i2c_read(uint8 address){
+	return (LATC & 2) ? 1 : 0;
+}
+
+void cbk_i2c_write(uint8 address, uint8 data){
+	if (data){
+		LATC |= 2;
+	}else{
+		LATC &= !2;
+	}
 }
 
 void main(void) {
@@ -43,26 +50,10 @@ void main(void) {
     OSCCON = 0b01100011;
     TRISC = 0;
 
-	i2c_init(255);
+	i2c_init(0x55u);
 
 	while(1){
-		LATC &= !2;
-
-		i2c_start();
-		i2c_send_address(0x55u, 0);
-		i2c_send_data(0u);
-		i2c_stop();
-
-		delay();
-
-		LATC |= 2;
-
-		i2c_start();
-		i2c_send_address(0x55u, 0);
-		i2c_send_data(1u);
-		i2c_stop();
-
-		delay();
+		i2c_check();
 	}
 
 
