@@ -143,12 +143,13 @@ void main(void) {
           // XOR LATC
           LATC ^= l1 & PORTC_MASK;
           break;
-        }
         case 13:
           read=255;
+          break;
         case 14:
           read++;
-        break;
+          break;
+        }
      }	
      if ((read > 0u) && uart_canSend()){
         /* PORTA 2-5 and  PORTC 0-3*/
