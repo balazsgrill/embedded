@@ -24,16 +24,128 @@
 
 #include <uart.h>
 
+/*
+ * Pinout:
+ * Rx: RC5
+ * Tx: RC4
+ * 
+ * Free on RA: RA2, RA4, RA5
+ * Free on RC: RC0, RC1, RC2, RC3
+ * 
+ * 8-bit control frame:
+ * 4-bit command (lower), 4-bit arg (upper)
+ * 
+ * Command opcode: 
+ * 0: Set TRISA (1 = input, 0 = output)
+ * 1: Set TRISC (1 = input, 0 = output)
+ * 2: OR LATA
+ * 3: OR LATC
+ * 4: AND LATA
+ * 5: AND LATC
+ * 6: SET LATA
+ * 7: SET LATC
+ * 8: XOR LATA
+ * 9: XOR LATC  
+ * 
+ * From device to host:
+ * Port data:
+ *  lower 4-bit: PORTA
+ *  upper 4-bit: PORTC                        
+ */
+
+// PORTA is 3-bits wide only (RA3 left out)
+#define PORTA_MASK 0x37u
+#define PORTC_MASK 0x0Fu
+
+uint8 maskedSet(uint8 value, uint8 mask, uint8 bits){
+  uint8 result = value;
+  
+  // Clear bits, that are 0 in bits
+  result &= (~mask) | bits; 
+  // Set bits that are 1 in bits
+  result |= mask & bits;
+  return result;
+}
+
 void main(void) {
     INTCON = 0;
     /* 2Mhz clock */
     OSCCON = 0b01100011;
-    TRISC = 0;
+    /* For EUSART, Tx/Rx pins shall be configured as input */
+    TRISA = 0xFF;
+    TRISC = 0xFF;
+    WPUA = 0;
+    LATA = 0;
+    LATC = 0;
+
+    ANSELA = 0;
+    ANSELC = 0;
+    APFCON0 = 0b00000000;
+    APFCON1 = 0b00000000;
 
 	uart_init();
 
+  uint8 data = 0;
+  uint8 l1;
+
 	while(1){
-		
+	   if (uart_canReceive()){
+        data = uart_receive();
+        if ((data & 1u) == 0u){
+          // PORTA
+          l1 = (data & 0xf0u) >> 2;
+        }else{
+          l1 = (data & 0xf0u) >> 4;
+          // PORTC
+        }
+        switch(data & 0xfu){
+        case 0:
+           // Set TRISA
+           TRISA = maskedSet(TRISA, PORTA_MASK l1);
+           break;
+        case 1:
+           // Set TRISC
+           TRISC = maskedSet(TRISC, PORTC_MASK l1);
+           break;
+        case 2: 
+          // OR LATA
+          LATA |= l1 & PORTA_MASK;  
+          break;
+        case 3:
+          // OR LATC
+          LATC |= l1 & PORTC_MASK;
+          break;
+        case 4:
+          // AND LATA
+          LATA &= l1 | (~PORTA_MASK);
+          break;
+        case 5:
+          // AND LATC
+          LATC &= l1 | (~PORTC_MASK);
+          break;
+        case 6:
+          // SET LATA
+          LATA = maskedSet(LATA, PORTA_MASK l1);
+          break;
+        case 7:
+          // SET LATC
+          LATC = maskedSet(LATC, PORTC_MASK l1);
+          break;          
+        case 8: 
+          // XOR LATA
+          LATA ^= l1 & PORTA_MASK;  
+          break;
+        case 9:
+          // XOR LATC
+          LATC ^= l1 & PORTC_MASK;
+          break;
+        }
+     }	
+     if (uart_canSend()){
+        /* PORTA 2-5 and  PORTC 0-3*/
+        data = ((PORTA>>2u) & 0xFu) | ((PORTC & 0xFu) << 4u);
+        uart_send(data);
+     }
 	}
 
 
