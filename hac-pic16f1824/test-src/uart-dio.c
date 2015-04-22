@@ -101,11 +101,11 @@ void main(void) {
         switch(data & 0xfu){
         case 0:
            // Set TRISA
-           TRISA = maskedSet(TRISA, PORTA_MASK l1);
+           TRISA = maskedSet(TRISA, PORTA_MASK, l1);
            break;
         case 1:
            // Set TRISC
-           TRISC = maskedSet(TRISC, PORTC_MASK l1);
+           TRISC = maskedSet(TRISC, PORTC_MASK, l1);
            break;
         case 2: 
           // OR LATA
@@ -125,11 +125,11 @@ void main(void) {
           break;
         case 6:
           // SET LATA
-          LATA = maskedSet(LATA, PORTA_MASK l1);
+          LATA = maskedSet(LATA, PORTA_MASK, l1);
           break;
         case 7:
           // SET LATC
-          LATC = maskedSet(LATC, PORTC_MASK l1);
+          LATC = maskedSet(LATC, PORTC_MASK, l1);
           break;          
         case 8: 
           // XOR LATA
