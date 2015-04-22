@@ -46,6 +46,9 @@
  * 7: SET LATC
  * 8: XOR LATA
  * 9: XOR LATC  
+ * 13: Read255
+ * 14: Read
+ * 15: NOP
  * 
  * From device to host:
  * Port data:
@@ -87,6 +90,7 @@ void main(void) {
 
   uint8 data = 0;
   uint8 l1;
+  uint8 read = 0;
 
 	while(1){
 	   if (uart_canReceive()){
@@ -140,11 +144,17 @@ void main(void) {
           LATC ^= l1 & PORTC_MASK;
           break;
         }
+        case 13:
+          read=255;
+        case 14:
+          read++;
+        break;
      }	
-     if (uart_canSend()){
+     if ((read > 0u) && uart_canSend()){
         /* PORTA 2-5 and  PORTC 0-3*/
         data = ((PORTA>>2u) & 0xFu) | ((PORTC & 0xFu) << 4u);
         uart_send(data);
+        read--;
      }
 	}
 
