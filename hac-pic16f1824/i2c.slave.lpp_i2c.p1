@@ -1,0 +1,466 @@
+Version 3.2 HI-TECH Software Intermediate Code
+"3707 c:\Program Files\Microchip\xc8\v1.33\include\pic16f1824.h
+[s S203 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S203 . SSPM0 SSPM1 SSPM2 SSPM3 CKP SSPEN SSPOV WCOL ]
+"3717
+[s S204 :4 `uc 1 ]
+[n S204 . SSPM ]
+"3706
+[u S202 `S203 1 `S204 1 ]
+[n S202 . . . ]
+"3721
+[v _SSP1CON1bits `VS202 ~T0 @X0 0 e@533 ]
+"3430
+[v _SSP1ADD `Vuc ~T0 @X0 0 e@530 ]
+"3515
+[s S196 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S196 . BF UA R_nW S P D_nA CKE SMP ]
+"3514
+[u S195 `S196 1 ]
+[n S195 . . ]
+"3526
+[v _SSP1STATbits `VS195 ~T0 @X0 0 e@532 ]
+"3398
+[v _SSPBUF `Vuc ~T0 @X0 0 e@529 ]
+"516
+[s S34 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S34 . TMR1IF TMR2IF CCP1IF SSP1IF TXIF RCIF ADIF TMR1GIF ]
+"515
+[u S33 `S34 1 ]
+[n S33 . . ]
+"527
+[v _PIR1bits `VS33 ~T0 @X0 0 e@17 ]
+"3393
+[v _SSP1BUF `Vuc ~T0 @X0 0 e@529 ]
+"34 drivers/i2c.slave.h
+[v _cbk_i2c_read `(uc ~T0 @X0 0 ef1`uc ]
+"42
+[v _cbk_i2c_write `(v ~T0 @X0 0 ef2`uc`uc ]
+"3504 c:\Program Files\Microchip\xc8\v1.33\include\pic16f1824.h
+[v _SSP1STAT `Vuc ~T0 @X0 0 e@532 ]
+"49 c:\Program Files\Microchip\xc8\v1.33\include\pic16f1824.h
+[; <" INDF0 equ 00h ;# ">
+"68
+[; <" INDF1 equ 01h ;# ">
+"87
+[; <" PCL equ 02h ;# ">
+"106
+[; <" STATUS equ 03h ;# ">
+"169
+[; <" FSR0L equ 04h ;# ">
+"188
+[; <" FSR0H equ 05h ;# ">
+"210
+[; <" FSR1L equ 06h ;# ">
+"229
+[; <" FSR1H equ 07h ;# ">
+"248
+[; <" BSR equ 08h ;# ">
+"299
+[; <" WREG equ 09h ;# ">
+"318
+[; <" PCLATH equ 0Ah ;# ">
+"337
+[; <" INTCON equ 0Bh ;# ">
+"414
+[; <" PORTA equ 0Ch ;# ">
+"463
+[; <" PORTC equ 0Eh ;# ">
+"512
+[; <" PIR1 equ 011h ;# ">
+"573
+[; <" PIR2 equ 012h ;# ">
+"623
+[; <" PIR3 equ 013h ;# ">
+"662
+[; <" TMR0 equ 015h ;# ">
+"681
+[; <" TMR1 equ 016h ;# ">
+"687
+[; <" TMR1L equ 016h ;# ">
+"706
+[; <" TMR1H equ 017h ;# ">
+"725
+[; <" T1CON equ 018h ;# ">
+"796
+[; <" T1GCON equ 019h ;# ">
+"872
+[; <" TMR2 equ 01Ah ;# ">
+"891
+[; <" PR2 equ 01Bh ;# ">
+"910
+[; <" T2CON equ 01Ch ;# ">
+"980
+[; <" CPSCON0 equ 01Eh ;# ">
+"1039
+[; <" CPSCON1 equ 01Fh ;# ">
+"1084
+[; <" TRISA equ 08Ch ;# ">
+"1133
+[; <" TRISC equ 08Eh ;# ">
+"1182
+[; <" PIE1 equ 091h ;# ">
+"1243
+[; <" PIE2 equ 092h ;# ">
+"1293
+[; <" PIE3 equ 093h ;# ">
+"1332
+[; <" OPTION_REG equ 095h ;# ">
+"1414
+[; <" PCON equ 096h ;# ">
+"1464
+[; <" WDTCON equ 097h ;# ">
+"1522
+[; <" OSCTUNE equ 098h ;# ">
+"1579
+[; <" OSCCON equ 099h ;# ">
+"1650
+[; <" OSCSTAT equ 09Ah ;# ">
+"1711
+[; <" ADRES equ 09Bh ;# ">
+"1717
+[; <" ADRESL equ 09Bh ;# ">
+"1736
+[; <" ADRESH equ 09Ch ;# ">
+"1755
+[; <" ADCON0 equ 09Dh ;# ">
+"1834
+[; <" ADCON1 equ 09Eh ;# ">
+"1905
+[; <" LATA equ 010Ch ;# ">
+"1949
+[; <" LATC equ 010Eh ;# ">
+"1998
+[; <" CM1CON0 equ 0111h ;# ">
+"2054
+[; <" CM1CON1 equ 0112h ;# ">
+"2119
+[; <" CM2CON0 equ 0113h ;# ">
+"2175
+[; <" CM2CON1 equ 0114h ;# ">
+"2240
+[; <" CMOUT equ 0115h ;# ">
+"2265
+[; <" BORCON equ 0116h ;# ">
+"2291
+[; <" FVRCON equ 0117h ;# ">
+"2366
+[; <" DACCON0 equ 0118h ;# ">
+"2426
+[; <" DACCON1 equ 0119h ;# ">
+"2477
+[; <" SRCON0 equ 011Ah ;# ">
+"2547
+[; <" SRCON1 equ 011Bh ;# ">
+"2608
+[; <" APFCON0 equ 011Dh ;# ">
+"2668
+[; <" APFCON1 equ 011Eh ;# ">
+"2705
+[; <" ANSELA equ 018Ch ;# ">
+"2751
+[; <" ANSELC equ 018Eh ;# ">
+"2796
+[; <" EEADR equ 0191h ;# ">
+"2802
+[; <" EEADRL equ 0191h ;# ">
+"2821
+[; <" EEADRH equ 0192h ;# ">
+"2840
+[; <" EEDAT equ 0193h ;# ">
+"2846
+[; <" EEDATL equ 0193h ;# ">
+"2851
+[; <" EEDATA equ 0193h ;# ">
+"2883
+[; <" EEDATH equ 0194h ;# ">
+"2902
+[; <" EECON1 equ 0195h ;# ">
+"2963
+[; <" EECON2 equ 0196h ;# ">
+"2982
+[; <" RCREG equ 0199h ;# ">
+"3001
+[; <" TXREG equ 019Ah ;# ">
+"3020
+[; <" SP1BRG equ 019Bh ;# ">
+"3026
+[; <" SP1BRGL equ 019Bh ;# ">
+"3031
+[; <" SPBRG equ 019Bh ;# ">
+"3035
+[; <" SPBRGL equ 019Bh ;# ">
+"3079
+[; <" SP1BRGH equ 019Ch ;# ">
+"3084
+[; <" SPBRGH equ 019Ch ;# ">
+"3116
+[; <" RCSTA equ 019Dh ;# ">
+"3177
+[; <" TXSTA equ 019Eh ;# ">
+"3238
+[; <" BAUDCON equ 019Fh ;# ">
+"3289
+[; <" WPUA equ 020Ch ;# ">
+"3346
+[; <" WPUC equ 020Eh ;# ">
+"3395
+[; <" SSP1BUF equ 0211h ;# ">
+"3400
+[; <" SSPBUF equ 0211h ;# ">
+"3432
+[; <" SSP1ADD equ 0212h ;# ">
+"3437
+[; <" SSPADD equ 0212h ;# ">
+"3469
+[; <" SSP1MSK equ 0213h ;# ">
+"3474
+[; <" SSPMSK equ 0213h ;# ">
+"3506
+[; <" SSP1STAT equ 0214h ;# ">
+"3511
+[; <" SSPSTAT equ 0214h ;# ">
+"3627
+[; <" SSP1CON equ 0215h ;# ">
+"3632
+[; <" SSP1CON1 equ 0215h ;# ">
+"3636
+[; <" SSPCON1 equ 0215h ;# ">
+"3640
+[; <" SSPCON equ 0215h ;# ">
+"3896
+[; <" SSP1CON2 equ 0216h ;# ">
+"3901
+[; <" SSPCON2 equ 0216h ;# ">
+"4017
+[; <" SSP1CON3 equ 0217h ;# ">
+"4022
+[; <" SSPCON3 equ 0217h ;# ">
+"4138
+[; <" CCPR1 equ 0291h ;# ">
+"4144
+[; <" CCPR1L equ 0291h ;# ">
+"4163
+[; <" CCPR1H equ 0292h ;# ">
+"4182
+[; <" CCP1CON equ 0293h ;# ">
+"4263
+[; <" PWM1CON equ 0294h ;# ">
+"4332
+[; <" CCP1AS equ 0295h ;# ">
+"4337
+[; <" ECCP1AS equ 0295h ;# ">
+"4493
+[; <" PSTR1CON equ 0296h ;# ">
+"4536
+[; <" CCPR2 equ 0298h ;# ">
+"4542
+[; <" CCPR2L equ 0298h ;# ">
+"4561
+[; <" CCPR2H equ 0299h ;# ">
+"4580
+[; <" CCP2CON equ 029Ah ;# ">
+"4661
+[; <" PWM2CON equ 029Bh ;# ">
+"4730
+[; <" CCP2AS equ 029Ch ;# ">
+"4811
+[; <" PSTR2CON equ 029Dh ;# ">
+"4854
+[; <" CCPTMRS0 equ 029Eh ;# ">
+"4859
+[; <" CCPTMRS equ 029Eh ;# ">
+"5027
+[; <" CCPR3 equ 0311h ;# ">
+"5033
+[; <" CCPR3L equ 0311h ;# ">
+"5052
+[; <" CCPR3H equ 0312h ;# ">
+"5071
+[; <" CCP3CON equ 0313h ;# ">
+"5134
+[; <" CCPR4 equ 0318h ;# ">
+"5140
+[; <" CCPR4L equ 0318h ;# ">
+"5159
+[; <" CCPR4H equ 0319h ;# ">
+"5178
+[; <" CCP4CON equ 031Ah ;# ">
+"5241
+[; <" INLVLA equ 038Ch ;# ">
+"5298
+[; <" INLVLC equ 038Eh ;# ">
+"5355
+[; <" IOCAP equ 0391h ;# ">
+"5412
+[; <" IOCAN equ 0392h ;# ">
+"5469
+[; <" IOCAF equ 0393h ;# ">
+"5526
+[; <" CLKRCON equ 039Ah ;# ">
+"5601
+[; <" MDCON equ 039Ch ;# ">
+"5651
+[; <" MDSRC equ 039Dh ;# ">
+"5703
+[; <" MDCARL equ 039Eh ;# ">
+"5767
+[; <" MDCARH equ 039Fh ;# ">
+"5831
+[; <" TMR4 equ 0415h ;# ">
+"5850
+[; <" PR4 equ 0416h ;# ">
+"5869
+[; <" T4CON equ 0417h ;# ">
+"5939
+[; <" TMR6 equ 041Ch ;# ">
+"5958
+[; <" PR6 equ 041Dh ;# ">
+"5977
+[; <" T6CON equ 041Eh ;# ">
+"6047
+[; <" STATUS_SHAD equ 0FE4h ;# ">
+"6078
+[; <" WREG_SHAD equ 0FE5h ;# ">
+"6097
+[; <" BSR_SHAD equ 0FE6h ;# ">
+"6116
+[; <" PCLATH_SHAD equ 0FE7h ;# ">
+"6135
+[; <" FSR0L_SHAD equ 0FE8h ;# ">
+"6154
+[; <" FSR0H_SHAD equ 0FE9h ;# ">
+"6173
+[; <" FSR1L_SHAD equ 0FEAh ;# ">
+"6192
+[; <" FSR1H_SHAD equ 0FEBh ;# ">
+"6211
+[; <" STKPTR equ 0FEDh ;# ">
+"6230
+[; <" TOSL equ 0FEEh ;# ">
+"6249
+[; <" TOSH equ 0FEFh ;# ">
+"39 drivers/i2c.slave.c
+[v _i2c_last_address `uc ~T0 @X0 1 s ]
+"41
+[v _i2c_init `(v ~T0 @X0 1 ef1`uc ]
+{
+[e :U _i2c_init ]
+[v _address `uc ~T0 @X0 1 r1 ]
+[f ]
+"42
+[e = . . _SSP1CON1bits 1 0 -> -> 6 `i `uc ]
+"43
+[e = _SSP1ADD _address ]
+"44
+[e = . . _SSP1CON1bits 0 4 -> -> 1 `i `uc ]
+"45
+[e = . . _SSP1CON1bits 0 5 -> -> 1 `i `uc ]
+"46
+[e = _i2c_last_address _address ]
+"47
+[e :UE 337 ]
+}
+[v F2745 `(v ~T0 @X0 1 tf1`uc ]
+"54
+[v _i2c_doPutData `TF2745 ~T0 @X0 1 s ]
+{
+[e :U _i2c_doPutData ]
+[v _data `uc ~T0 @X0 1 r1 ]
+[f ]
+"55
+[e $U 339  ]
+[e :U 340 ]
+[e :U 339 ]
+[e $ != -> . . _SSP1STATbits 0 0 `i -> -> -> 0 `i `Vuc `i 340  ]
+[e :U 341 ]
+"56
+[e :U 344 ]
+{
+"57
+[e = . . _SSP1CON1bits 0 7 -> -> 0 `ui `uc ]
+"58
+[e = _SSPBUF _data ]
+"59
+}
+[e $ != -> . . _SSP1CON1bits 0 7 `i -> -> -> 0 `i `Vuc `i 344  ]
+[e :U 343 ]
+"60
+[e = . . _SSP1CON1bits 0 4 -> -> 1 `i `uc ]
+"61
+[e :UE 338 ]
+}
+"63
+[v _i2c_check `(v ~T0 @X0 1 ef ]
+{
+[e :U _i2c_check ]
+[f ]
+"64
+[v _data `uc ~T0 @X0 1 a ]
+"66
+[e $ ! != -> . . _PIR1bits 0 3 `i -> -> -> 0 `i `Vuc `i 346  ]
+{
+"67
+[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
+"69
+[e $U 348  ]
+{
+"70
+[e :U 349 ]
+"71
+[e :U 350 ]
+"72
+[e = _i2c_last_address _SSP1BUF ]
+"73
+[e = _data ( _cbk_i2c_read (1 _i2c_last_address ]
+"74
+[e ( _i2c_doPutData (1 _data ]
+"75
+[e $U 347  ]
+"76
+[e :U 351 ]
+"77
+[e = _data ( _cbk_i2c_read (1 _i2c_last_address ]
+"78
+[e ( _i2c_doPutData (1 _data ]
+"79
+[e $U 347  ]
+"80
+[e :U 352 ]
+"81
+[e = _i2c_last_address _SSP1BUF ]
+"82
+[e $U 347  ]
+"83
+[e :U 353 ]
+"84
+[e = _data _SSP1BUF ]
+"85
+[e ( _cbk_i2c_write (2 , _i2c_last_address _data ]
+"86
+[e $U 347  ]
+"87
+[e :U 354 ]
+"89
+[e = . . _SSP1STATbits 0 2 -> -> 0 `i `uc ]
+"90
+[e $U 347  ]
+"91
+}
+[e $U 347  ]
+"69
+[e :U 348 ]
+[e [\ & -> _SSP1STAT `ui -> 45 `ui , $ -> 12 `ui 349
+ , $ -> 13 `ui 350
+ , $ -> 44 `ui 351
+ , $ -> 9 `ui 352
+ , $ -> 41 `ui 353
+ 354 ]
+"91
+[e :U 347 ]
+"92
+}
+[e :U 346 ]
+"93
+[e :UE 345 ]
+}

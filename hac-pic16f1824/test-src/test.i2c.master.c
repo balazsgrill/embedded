@@ -1,4 +1,4 @@
-/*
+﻿/*
  * test.i2c.master.c
  *
  *  Created on: 2015 márc. 4
@@ -53,7 +53,7 @@ void main(void) {
 		i2c_send_data(0u);
 		i2c_stop();
 
-		delay();
+		//delay();
 
 		LATC |= 2;
 
@@ -62,7 +62,7 @@ void main(void) {
 		i2c_send_data(1u);
 		i2c_stop();
 
-		delay();
+		//delay();
 	}
 
 

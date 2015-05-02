@@ -1,0 +1,1 @@
+ test.i2c.slave.hex_test.i2c.d  test.i2c.slave.hex_test.i2c.p1:  test-src/test.i2c.slave.c drivers/mtypes.h drivers/i2c.slave.h

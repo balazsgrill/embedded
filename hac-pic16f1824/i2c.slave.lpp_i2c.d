@@ -1,0 +1,1 @@
+ i2c.slave.lpp_i2c.d  i2c.slave.lpp_i2c.p1:  drivers/i2c.slave.c drivers/i2c.slave.h drivers/mtypes.h
