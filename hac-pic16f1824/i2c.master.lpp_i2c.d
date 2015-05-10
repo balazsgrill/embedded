@@ -1,1 +1,0 @@
- i2c.master.lpp_i2c.d  i2c.master.lpp_i2c.p1:  drivers/i2c.master.c drivers/i2c.master.h drivers/mtypes.h
