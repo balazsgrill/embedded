@@ -3,7 +3,8 @@
  */
 package uart.dio.java;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import jssc.SerialPortException;
 
 import org.junit.Test;
@@ -18,10 +19,19 @@ import uart.dio.lib.UARTDioInterface;
 public class ConnectionTest {
 
 	@Test
+	public void NOPTest() throws SerialPortException{
+		try(UARTDioInterface inf = new UARTDioInterface("COM3")){
+			for(int i=0;i<1000;i++){
+				inf.sendCommand(UARTDioCommand.NOP, 0);
+			}
+		}
+	}
+	
+	@Test
 	public void test() throws SerialPortException {
-		try(UARTDioInterface inf = new UARTDioInterface("")){
+		try(UARTDioInterface inf = new UARTDioInterface("COM3")){
 			assertNull(inf.read());
-			inf.sendCommand(UARTDioCommand.READ, 0);
+			inf.sendCommand(UARTDioCommand.READ255, 0);
 			assertNotNull(inf.read());
 			assertNull(inf.read());
 		}
