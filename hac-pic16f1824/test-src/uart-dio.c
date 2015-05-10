@@ -159,7 +159,7 @@ void main(void) {
     		read--;
     	}else{
     		// TODO send something for test purposes
-    		uart_send(0xFFu);
+    		//uart_send(0xFFu);
     	}
      }
 	}
