@@ -151,11 +151,16 @@ void main(void) {
           break;
         }
      }	
-     if ((read > 0u) && uart_canSend()){
-        /* PORTA 2-5 and  PORTC 0-3*/
-        data = ((PORTA>>2u) & 0xFu) | ((PORTC & 0xFu) << 4u);
-        uart_send(data);
-        read--;
+     if (uart_canSend()){
+    	if ((read > 0u)){
+    		/* PORTA 2-5 and  PORTC 0-3*/
+    		data = ((PORTA>>2u) & 0xFu) | ((PORTC & 0xFu) << 4u);
+    		uart_send(data);
+    		read--;
+    	}else{
+    		// TODO send something for test purposes
+    		uart_send(0xFFu);
+    	}
      }
 	}
 
