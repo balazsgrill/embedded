@@ -91,6 +91,7 @@ void main(void) {
   uint8 data = 0;
   uint8 l1;
   uint8 read = 0;
+  uint8 heartbeat_counter = 255;
 
 	while(1){
 	   if (uart_canReceive()){
@@ -158,8 +159,13 @@ void main(void) {
     		uart_send(data);
     		read--;
     	}else{
-    		// TODO send something for test purposes
-    		//uart_send(0xFFu);
+    		// Sending heartbeat (0xFFu, a value which can never be read normally)
+			heartbeat_counter--;
+			if (heartbeat_counter == 0u){
+				uart_send(0xFFu);
+				heartbeat_counter=255u;
+			}
+    		
     	}
      }
 	}
